@@ -6,13 +6,13 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { useNavigate } from "react-router-dom";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "../../../services/firebase";
+import Invoice from "../print/Invoice";
 const AddSales = () => {
   const [show, setShow] = useState(false);
 
-  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     orderId: "",
-    salesDate: "",
     customerName: "",
     itemsName: "",
     itemCost:"",
@@ -34,13 +34,15 @@ const AddSales = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      const today = new Date();
+      const formattedDate = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+  
       const assetCollectionRef = collection(db, 'sales')
-      await addDoc(assetCollectionRef, formData)
+      await addDoc(assetCollectionRef, { ...formData, salesDate: formattedDate })
       console.log("Form Data Saved to Firestore:", formData);
       handleClose();
       setFormData({
         orderId: "",
-        salesDate: "",
         customerName: "",
         itemsName: "",
         itemCost:"",
@@ -66,7 +68,7 @@ const AddSales = () => {
       <Button variant="primary" onClick={handleShow}>
         Add Sales
       </Button>
-
+      {/* <Invoice  /> */}
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Sales Record</Modal.Title>
@@ -83,7 +85,7 @@ const AddSales = () => {
                 autoFocus
               />
             </Form.Group>
-            <Form.Group className="mb-3">
+            {/* <Form.Group className="mb-3">
               <Form.Label>Sales Date</Form.Label>
               <Form.Control type="date" name="salesDate"  onChange={handleChange}/>
             </Form.Group>
@@ -96,7 +98,7 @@ const AddSales = () => {
                 onChange={handleChange}
                 autoFocus
               />
-            </Form.Group>
+            </Form.Group> */}
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
               <Form.Label>Items Name</Form.Label>
               <Form.Control

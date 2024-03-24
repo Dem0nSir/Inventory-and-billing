@@ -2,11 +2,15 @@ import React, { useEffect, useState } from "react";
 import { collection, deleteDoc, doc, onSnapshot } from "firebase/firestore";
 import { db } from "../services/firebase";
 import AddSales from "./products/components/AddSales";
-import 'bootstrap/dist/css/bootstrap.min.css'
+import "bootstrap/dist/css/bootstrap.min.css";
+import Invoice from "./products/print/Invoice";
+import { useNavigate } from "react-router-dom";
 
 const Sales = () => {
-  const[sales,setSales] = useState([])
-
+  const [sales, setSales] = useState([]);
+  const [showInvoice, setShowInvoice] = useState(false);
+  const navigate = useNavigate();
+  console.log(sales);
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, "sales"), (snapshot) => {
       const suppliersData = snapshot.docs.map((doc) => ({
@@ -23,7 +27,8 @@ const Sales = () => {
     const Doc = doc(db, "sales", id);
     return deleteDoc(Doc);
   };
-  console.log(sales)
+  console.log(sales);
+
   return (
     <>
       <div className="bg-white h-screen">
@@ -138,7 +143,7 @@ const Sales = () => {
                     <span className="card-label fw-bold fs-3">Sales</span>
                   </div>
                 </div>
-                <AddSales/>
+                <AddSales />
               </div>
             </div>
           </div>
@@ -175,7 +180,7 @@ const Sales = () => {
                   </tr>
                 </thead>
                 <tbody>
-                {sales.map((sale) => (
+                  {sales.map((sale) => (
                     <tr key={sale.id}>
                       <td>{sale.orderId}</td>
                       <td>{sale.salesDate}</td>
@@ -186,22 +191,28 @@ const Sales = () => {
                       <td>{sale.paymentMethod}</td>
                       <td>{sale.salesTotal}</td>
                       <td>
-                      <button
+                        <button
                           className="btn btn-sm btn-danger"
                           onClick={() => handleDelete(sale.id)}
                         >
                           Delete
                         </button>
+                        <button
+                          className="btn btn-sm btn-primary mx-2"
+                          // onClick={navigate('/sales/bill')}
+                        >
+                          Bill
+                        </button>
                       </td>
-                      </tr>
-                ))}
-                 
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
           </div>
         </div>
       </div>
+     
     </>
   );
 };

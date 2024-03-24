@@ -1,7 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import DashCard from "./components/DashCard";
+import { collection, onSnapshot } from "firebase/firestore";
+import { db } from "../services/firebase";
 
 const Dashboard = (props) => {
+  const [sales, setSales] = useState([]);
+  console.log(sales);
+  useEffect(() => {
+    const unsubscribe = onSnapshot(collection(db, "sales"), (snapshot) => {
+      const suppliersData = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setSales(suppliersData);
+    });
+    // Unsubscribe from the snapshot listener when component unmounts
+    return () => unsubscribe();
+  }, []);
+
+  const today = new Date();
+  const formattedToday = `${today.getFullYear()}-${
+    today.getMonth() + 1
+  }-${today.getDate()}`;
+
   return (
     <div className="bg-white h-screen">
       <div class="ml-auto mb-6 lg:w-[75%] xl:w-[80%] 2xl:w-[85%]">
@@ -108,54 +129,36 @@ const Dashboard = (props) => {
           <DashCard />
         </div>
         <div className="mx-4 ">
-          <div className="fs-4 fw-bold m-1">
-            Todays Sales
-          </div>
+          <div className="fs-4 fw-bold m-1">Todays Sales</div>
           <div class="table-responsive ">
             <table class="table table-rounded table-striped border gy-7 gs-7">
               <thead>
                 <tr class="fw-semibold fs-6 text-gray-800 border-bottom border-gray-200">
-                  <th>Name</th>
-                  <th>Position</th>
-                  <th>Office</th>
-                  <th>Age</th>
-                  <th>Start date</th>
-                  <th>Salary</th>
+                  <th>Order ID</th>
+                  <th>Sales Date</th>
+                  <th>Customer Name</th>
+                  <th>Items Name</th>
+                  <th>Item Sold</th>
+                  <th>Sales Channel</th>
+                  <th>Payment Method</th>
+                  <th>Sales Total</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>Tiger Nixon</td>
-                  <td>System Architect</td>
-                  <td>Edinburgh</td>
-                  <td>61</td>
-                  <td>2011/04/25</td>
-                  <td>$320,800</td>
-                </tr>
-                <tr>
-                  <td>Garrett Winters</td>
-                  <td>Accountant</td>
-                  <td>Tokyo</td>
-                  <td>63</td>
-                  <td>2011/07/25</td>
-                  <td>$170,750</td>
-                </tr>
-                <tr>
-                  <td>Garrett Winters</td>
-                  <td>Accountant</td>
-                  <td>Tokyo</td>
-                  <td>63</td>
-                  <td>2011/07/25</td>
-                  <td>$170,750</td>
-                </tr>
-                <tr>
-                  <td>Garrett Winters</td>
-                  <td>Accountant</td>
-                  <td>Tokyo</td>
-                  <td>63</td>
-                  <td>2011/07/25</td>
-                  <td>$170,750</td>
-                </tr>
+                {sales
+                  .filter((sale) => sale.salesDate === formattedToday)
+                  .map((sale) => (
+                    <tr key={sale.id}>
+                      <td>{sale.orderId}</td>
+                      <td>{sale.salesDate}</td>
+                      <td>{sale.customerName}</td>
+                      <td>{sale.itemsName}</td>
+                      <td>{sale.itemSold}</td>
+                      <td>{sale.salesChannel}</td>
+                      <td>{sale.paymentMethod}</td>
+                      <td>{sale.salesTotal}</td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
           </div>

@@ -42,9 +42,9 @@ const Signup = () => {
 
   return (
     <>
-      <main>
+      <main style={{ height: "100vh" }}>
         <section className="bg-light p-3 p-md-4 p-xl-5">
-          <div className="container">
+          <div className="container my-5">
             <div className="row justify-content-center">
               <div className="col-12 col-xxl-11">
                 <div className="card border-light-subtle shadow-sm">
@@ -220,6 +220,7 @@ const Signup = () => {
                                 Already have an account?{" "}
                                 <NavLink to="/login">Sign in</NavLink>
                               </p>
+                              {/* <button onClick={navigate('/dashboard')}>Back to dashboard</button> */}
                             </div>
                           </div>
                         </div>

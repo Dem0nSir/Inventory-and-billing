@@ -1,349 +1,121 @@
-import React, { useEffect } from "react";
-import Card from "react-bootstrap/Card";
-import Chart from "react-apexcharts";
+import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { collection, onSnapshot } from "firebase/firestore";
+import { db } from "../../services/firebase";
 const DashCard = () => {
-  // useEffect(() => {
-  //     const element = document.getElementById('kt_apexcharts_3');
-  //     const height = parseInt(window.getComputedStyle(element).height);
-  //     const labelColor = getComputedStyle(document.documentElement).getPropertyValue('--kt-gray-500');
-  //     const borderColor = getComputedStyle(document.documentElement).getPropertyValue('--kt-gray-200');
-  //     const baseColor = getComputedStyle(document.documentElement).getPropertyValue('--kt-info');
-  //     const lightColor = getComputedStyle(document.documentElement).getPropertyValue('--kt-info-light');
+  const [sales, setSales] = useState([]);
+  const [totalSales, setTotalSales] = useState(0);
+  const [totalProducts, setTotalProducts] = useState(0);
 
-  //     const options = {
-  //         series: [{
-  //             name: 'Net Profit',
-  //             data: [30, 40, 40, 90, 90, 70, 70]
-  //         }],
-  //         chart: {
-  //             fontFamily: 'inherit',
-  //             type: 'area',
-  //             height: height,
-  //             toolbar: {
-  //                 show: false
-  //             }
-  //         },
-  //         plotOptions: {},
-  //         legend: {
-  //             show: false
-  //         },
-  //         dataLabels: {
-  //             enabled: false
-  //         },
-  //         fill: {
-  //             type: 'solid',
-  //             opacity: 1
-  //         },
-  //         stroke: {
-  //             curve: 'smooth',
-  //             show: true,
-  //             width: 3,
-  //             colors: [baseColor]
-  //         },
-  //         xaxis: {
-  //             categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'],
-  //             axisBorder: {
-  //                 show: false,
-  //             },
-  //             axisTicks: {
-  //                 show: false
-  //             },
-  //             labels: {
-  //                 style: {
-  //                     colors: labelColor,
-  //                     fontSize: '12px'
-  //                 }
-  //             },
-  //             crosshairs: {
-  //                 position: 'front',
-  //                 stroke: {
-  //                     color: baseColor,
-  //                     width: 1,
-  //                     dashArray: 3
-  //                 }
-  //             },
-  //             tooltip: {
-  //                 enabled: true,
-  //                 formatter: undefined,
-  //                 offsetY: 0,
-  //                 style: {
-  //                     fontSize: '12px'
-  //                 }
-  //             }
-  //         },
-  //         yaxis: {
-  //             labels: {
-  //                 style: {
-  //                     colors: labelColor,
-  //                     fontSize: '12px'
-  //                 }
-  //             }
-  //         },
-  //         states: {
-  //             normal: {
-  //                 filter: {
-  //                     type: 'none',
-  //                     value: 0
-  //                 }
-  //             },
-  //             hover: {
-  //                 filter: {
-  //                     type: 'none',
-  //                     value: 0
-  //                 }
-  //             },
-  //             active: {
-  //                 allowMultipleDataPointsSelection: false,
-  //                 filter: {
-  //                     type: 'none',
-  //                     value: 0
-  //                 }
-  //             }
-  //         },
-  //         tooltip: {
-  //             style: {
-  //                 fontSize: '12px'
-  //             },
-  //             y: {
-  //                 formatter: function (val) {
-  //                     return '$' + val + ' thousands'
-  //                 }
-  //             }
-  //         },
-  //         colors: [lightColor],
-  //         grid: {
-  //             borderColor: borderColor,
-  //             strokeDashArray: 4,
-  //             yaxis: {
-  //                 lines: {
-  //                     show: true
-  //                 }
-  //             }
-  //         },
-  //         markers: {
-  //             strokeColor: baseColor,
-  //             strokeWidth: 3
-  //         }
-  //     };
-
-  //     if (element) {
-  //         const chart = new Chart(element, options);
-  //         chart.render();
-  //     }
-  // }, []);
+  console.log(sales);
+  useEffect(() => {
+    const unsubscribe = onSnapshot(collection(db, "sales"), (snapshot) => {
+      const suppliersData = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setSales(suppliersData);
+    });
+    // Unsubscribe from the snapshot listener when component unmounts
+    return () => unsubscribe();
+  }, []);
+  useEffect(() => {
+    const unsubscribe = onSnapshot(collection(db, "products"), (snapshot) => {
+      const productsData = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setTotalProducts(productsData.length);
+    });
+    // Unsubscribe from the snapshot listener when component unmounts
+    return () => unsubscribe();
+  }, []);
+  useEffect(() => {
+    const total = sales.reduce(
+      (total, sale) => total + parseInt(sale.salesTotal),
+      0
+    );
+    setTotalSales(total);
+  }, [sales]);
   return (
     <>
       <div className="m-4 mt-2 fs-1 text-center">
         Inventory Management System
       </div>
-      <div className="row gx-5 gx-xl-10">
-        {/*begin::Col*/}
-        <div className="col-sm-4 mb-5 mb-xl-10">
-          {/*begin::List widget 1*/}
-          <div className="card card-flush h-lg-100">
-            {/*begin::Header*/}
-            <div className="card-header pt-5">
-              {/*begin::Title*/}
-              <h3 className="card-title align-items-start flex-column">
-                <div className="d-flex align-items-center">
-                  <img src="/icons/cart4.svg" alt="" className="me-2" />
-                  <span className="card-label fw-bold text-dark">
-                    Total Sales
-                  </span>
-                </div>
-              </h3>
-              {/*end::Title*/}
+      <div className="container-fluid mb-5">
+        <div className="row g-3 my-2">
+          <div className="col-md-3">
+            <div className="p-3 bg-white border shadow-sm d-flex justify-content-around align-items-center rounded">
+              <div>
+                <h3 className="fs-2">{totalProducts}</h3>
+                <p className="fs-5">Products</p>
+              </div>
+              <img
+                src="/icons/cart4.svg"
+                alt=""
+                className="me-2 my-4"
+                style={{ width: "100px", height: "100px" }}
+              />
             </div>
-            {/*end::Header*/}
-            {/*begin::Body*/}
-            <div className="card-body pt-3 ">
-              {/* <div className="card-body d-flex align-items-end pt-2 justify-content-end px-2"> */}
-                <div className="d-flex align-items-center flex-column  w-100 justify-content-end">
-                  <div className="d-flex flex-column flex-sm-row justify-content-between fw-bold fs-6 text-black opacity-75 w-100 mt-auto mb-2 pt-2">
-                    <span className="text-gray-400">Rs 1000000</span>
-
-                    <span className="text-muted fs-7">
-                      {" "}
-                      50%
-                      {/* {grandTotal === 40 && policyTotal === 40 && onboardingTotal === 20
-                      ? '3 of 3 complete'
-                      : ((grandTotal === 40 ? 1 : 0) + (policyTotal === 40 ? 1 : 0) + (onboardingTotal === 20 ? 1 : 0)) === 2 
-                      ? '2 of 3 complete'
-                      : grandTotal === 40 || policyTotal === 40 || onboardingTotal === 20
-                      ? '1 of 3 complete'
-                      : '0 of 3 complete'} */}
-                    </span>
-                  </div>
-                </div>
-              {/* </div> */}
-              {/*begin::Item*/}
-              {/* <div className="d-flex flex-stack">
-               
-                <div className="text-gray-700 fw-semibold fs-6 me-2">
-                  <div className="d-inline-block align-middle me-1">
-                    <img src="/media/logos/ControlsTotal.svg" alt="" />
-                  </div>
-                  Total Controls
-                </div>
-
-                <div className="d-flex align-items-senter">
-           
-                  <span className="text-gray-900 fw-bolder fs-6">2</span>
-              
-                </div>
-          
-              </div> */}
-              {/*end::Item*/}
-              {/*begin::Separator*/}
-            </div>
-            {/*end::Body*/}
           </div>
-          {/*end::LIst widget 1*/}
-        </div>
-        {/*end::Col*/}
 
-        <div className="col-sm-4 mb-5 mb-xl-10">
-          {/*begin::List widget 1*/}
-          <div className="card card-flush h-lg-100">
-            {/*begin::Header*/}
-            <div className="card-header pt-5">
-              {/*begin::Title*/}
-              <h3 className="card-title align-items-start flex-column">
-                <span className="card-label fw-bold text-dark">
-                  Total Expenses
-                </span>
-              </h3>
-              {/*end::Title*/}
-            </div>
-            {/*end::Header*/}
-            {/*begin::Body*/}
-            <div className="card-body pt-3">
-              <div className="card-body d-flex align-items-end pt-2 justify-content-end px-2">
-                <div className="d-flex align-items-center flex-column  w-100 justify-content-end">
-                  <div
-                    className="h-12px mx-0 w-100 rounded"
-                    style={{ backgroundColor: "#DAF9EF" }}
-                  >
-                    <div
-                      className="rounded h-8px"
-                      role="progressbar"
-                      style={{
-                        width: `${Math.min(10, 100)}%`,
-                        backgroundColor: "#44DBAF",
-                      }}
-                      aria-valuenow={Math.min(10, 100)}
-                      aria-valuemin={0}
-                      aria-valuemax={100}
-                    ></div>
-                  </div>
-                </div>
+          <div className="col-md-3">
+            <div className="p-3 bg-white border shadow-sm d-flex justify-content-around align-items-center rounded">
+              <div>
+                <h3 className="fs-3"> Rs {totalSales}</h3>
+                <p className="fs-5">Sales</p>
               </div>
-              {/*begin::Item*/}
-              <div className="d-flex flex-stack">
-                {/*begin::Section*/}
-                <div className="text-gray-700 fw-semibold fs-6 me-2">
-                  <div className="d-inline-block align-middle me-1">
-                    <img src="/media/logos/ControlsTotal.svg" alt="" />
-                  </div>
-                  Rs 100000
-                </div>
-
-                {/*end::Section*/}
-                {/*begin::Statistics*/}
-                <div className="d-flex align-items-senter">
-                  {/*begin::Number*/}
-                  <span className="text-gray-900 fw-bolder fs-6">10%</span>
-                  {/*end::Number*/}
-                </div>
-                {/*end::Statistics*/}
-              </div>
-              {/*end::Item*/}
-              {/*begin::Separator*/}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="100"
+                height="100"
+                fill="currentColor"
+                className="bi bi-currency-rupee me-2 my-4"
+                viewBox="0 0 16 16"
+              >
+                <path d="M4 3.06h2.726c1.22 0 2.12.575 2.325 1.724H4v1.051h5.051C8.855 7.001 8 7.558 6.788 7.558H4v1.317L8.437 14h2.11L6.095 8.884h.855c2.316-.018 3.465-1.476 3.688-3.049H12V4.784h-1.345c-.08-.778-.357-1.335-.793-1.732H12V2H4z" />
+              </svg>
             </div>
-            {/*end::Body*/}
           </div>
-          {/*end::LIst widget 1*/}
-        </div>
-
-        <div className="col-sm-4 mb-5 mb-xl-10">
-          {/*begin::List widget 1*/}
-          <div className="card card-flush h-lg-100">
-            {/*begin::Header*/}
-            <div className="card-header pt-5">
-              {/*begin::Title*/}
-              <h3 className="card-title align-items-start flex-column">
-                <span className="card-label fw-bold text-dark">
-                  {" "}
-                  Total Income
-                </span>
-              </h3>
-              {/*end::Title*/}
-            </div>
-            {/*end::Header*/}
-            {/*begin::Body*/}
-            <div className="card-body pt-3">
-              <div className="card-body d-flex align-items-end pt-2 justify-content-end px-2">
-                <div className="d-flex align-items-center flex-column  w-100 justify-content-end">
-                  <div className="d-flex flex-column flex-sm-row justify-content-between fw-bold fs-6 text-black opacity-75 w-100 mt-auto mb-2 pt-2">
-                    <span className="text-gray-400">Controls OK</span>
-
-                    <span className="text-muted fs-7">
-                      {" "}
-                      10%
-                      {/* {grandTotal === 40 && policyTotal === 40 && onboardingTotal === 20
-                      ? '3 of 3 complete'
-                      : ((grandTotal === 40 ? 1 : 0) + (policyTotal === 40 ? 1 : 0) + (onboardingTotal === 20 ? 1 : 0)) === 2 
-                      ? '2 of 3 complete'
-                      : grandTotal === 40 || policyTotal === 40 || onboardingTotal === 20
-                      ? '1 of 3 complete'
-                      : '0 of 3 complete'} */}
-                    </span>
-                  </div>
-
-                  <div
-                    className="h-12px mx-0 w-100 rounded"
-                    style={{ backgroundColor: "#DAF9EF" }}
-                  >
-                    <div
-                      className="rounded h-8px"
-                      role="progressbar"
-                      style={{
-                        width: `${Math.min(10, 100)}%`,
-                        backgroundColor: "#44DBAF",
-                      }}
-                      aria-valuenow={Math.min(10, 100)}
-                      aria-valuemin={0}
-                      aria-valuemax={100}
-                    ></div>
-                  </div>
-                </div>
+          <div className="col-md-3">
+            <div className="p-3 bg-white border shadow-sm d-flex justify-content-around align-items-center rounded">
+              <div>
+                <h3 className="fs-2">25</h3>
+                <p className="fs-5">Delivery</p>
               </div>
-              {/*begin::Item*/}
-              <div className="d-flex flex-stack">
-                {/*begin::Section*/}
-                <div className="text-gray-700 fw-semibold fs-6 me-2">
-                  <div className="d-inline-block align-middle me-1">
-                    <img src="/icons/cart4.svg" alt="" />
-                  </div>
-                  Total Controls
-                </div>
-
-                {/*end::Section*/}
-                {/*begin::Statistics*/}
-                <div className="d-flex align-items-senter">
-                  {/*begin::Number*/}
-                  <span className="text-gray-900 fw-bolder fs-6">2</span>
-                  {/*end::Number*/}
-                </div>
-                {/*end::Statistics*/}
-              </div>
-              {/*end::Item*/}
-              {/*begin::Separator*/}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="100"
+                height="100"
+                fill="currentColor"
+                class="bi bi-truck me-2 my-4"
+                viewBox="0 0 16 16"
+              >
+                <path d="M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5zm1.294 7.456A2 2 0 0 1 4.732 11h5.536a2 2 0 0 1 .732-.732V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .294.456M12 10a2 2 0 0 1 1.732 1h.768a.5.5 0 0 0 .5-.5V8.35a.5.5 0 0 0-.11-.312l-1.48-1.85A.5.5 0 0 0 13.02 6H12zm-9 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2m9 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2" />
+              </svg>
             </div>
-            {/*end::Body*/}
           </div>
-          {/*end::LIst widget 1*/}
+          <div className="col-md-3">
+            <div className="p-3 bg-white border shadow-sm d-flex justify-content-around align-items-center rounded">
+              <div>
+                <h3 className="fs-2">20%</h3>
+                <p className="fs-5">Increase</p>
+              </div>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="100"
+                height="100"
+                fill="currentColor"
+                class="bi bi-graph-up-arrow me-2 my-4"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M0 0h1v15h15v1H0zm10 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4.9l-3.613 4.417a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61L13.445 4H10.5a.5.5 0 0 1-.5-.5"
+                />
+              </svg>
+            </div>
+          </div>
         </div>
       </div>
     </>
