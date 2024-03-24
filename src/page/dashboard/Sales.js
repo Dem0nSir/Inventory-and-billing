@@ -1,28 +1,29 @@
 import React, { useEffect, useState } from "react";
-import Addsupplier from "./products/components/Addsupplier";
 import { collection, deleteDoc, doc, onSnapshot } from "firebase/firestore";
 import { db } from "../services/firebase";
+import AddSales from "./products/components/AddSales";
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 const Sales = () => {
-  const[supplier,setSupplier] = useState([])
+  const[sales,setSales] = useState([])
 
   useEffect(() => {
-    const unsubscribe = onSnapshot(collection(db, "supplier"), (snapshot) => {
+    const unsubscribe = onSnapshot(collection(db, "sales"), (snapshot) => {
       const suppliersData = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
-      setSupplier(suppliersData);
+      setSales(suppliersData);
     });
     // Unsubscribe from the snapshot listener when component unmounts
     return () => unsubscribe();
   }, []);
 
   const handleDelete = (id) => {
-    const Doc = doc(db, "supplier", id);
+    const Doc = doc(db, "sales", id);
     return deleteDoc(Doc);
   };
-  console.log(supplier)
+  console.log(sales)
   return (
     <>
       <div className="bg-white h-screen">
@@ -134,24 +135,23 @@ const Sales = () => {
                     {/* <img src={toAbsoluteUrl(`/media/logos/${icon}`)} alt='' /> */}
                   </div>
                   <div className="d-flex flex-column">
-                    <span className="card-label fw-bold fs-3">Supplier</span>
+                    <span className="card-label fw-bold fs-3">Sales</span>
                   </div>
                 </div>
-                {/* <Addproduct /> */}
-                <Addsupplier />
+                <AddSales/>
               </div>
             </div>
           </div>
 
           <div className="card m-4 h-100">
             <div className="mx-3 mt-3 fs-4 d-flex align-items-center">
-              <span>Suppliers</span>
+              <span>Sales</span>
               <div className="ms-auto ">
                 <input
                   type="text"
                   data-kt-user-table-filter="search"
                   className="form-control form-control-solid w-250px ps-14"
-                  placeholder="Search suppliers"
+                  placeholder="Search sales info"
                   // value={searchTerm}
                   // onChange={(e) => setSearchTerm(e.target.value)}
                 />
@@ -163,26 +163,32 @@ const Sales = () => {
               <table class="table">
                 <thead>
                   <tr class="fw-bold fs-6 text-gray-800">
-                    <th>Supplier Name</th>
-                    <th>Product</th>
-                    <th>Contact Number</th>
-                    <th>Email</th>
-                    <th>Type</th>
+                    <th>Order ID</th>
+                    <th>Sales Date</th>
+                    <th>Customer Name</th>
+                    <th>Items Name</th>
+                    <th>Item Sold</th>
+                    <th>Sales Channel</th>
+                    <th>Payment Method</th>
+                    <th>Sales Total</th>
                     <th></th>
                   </tr>
                 </thead>
                 <tbody>
-                {supplier.map((supplier) => (
-                    <tr key={supplier.id}>
-                      <td>{supplier.SupplierName}</td>
-                      <td>{supplier.product}</td>
-                      <td>{supplier.contactNumber}</td>
-                      <td>{supplier.email}</td>
-                      <td>{supplier.productType}</td>
+                {sales.map((sale) => (
+                    <tr key={sale.id}>
+                      <td>{sale.orderId}</td>
+                      <td>{sale.salesDate}</td>
+                      <td>{sale.customerName}</td>
+                      <td>{sale.itemsName}</td>
+                      <td>{sale.itemSold}</td>
+                      <td>{sale.salesChannel}</td>
+                      <td>{sale.paymentMethod}</td>
+                      <td>{sale.salesTotal}</td>
                       <td>
                       <button
                           className="btn btn-sm btn-danger"
-                          onClick={() => handleDelete(supplier.id)}
+                          onClick={() => handleDelete(sale.id)}
                         >
                           Delete
                         </button>

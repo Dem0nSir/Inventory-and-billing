@@ -14,8 +14,9 @@ import Sales from "./page/dashboard/Sales";
 import Orders from "./page/dashboard/Orders";
 import Stores from "./page/dashboard/Stores";
 import Report from "./page/dashboard/Report";
+import Suppliers from "./page/dashboard/Suppliers";
 
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-beta1/js/bootstrap.bundle.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-beta1/js/bootstrap.bundle.min.js"></script>;
 const ProtectedRoute = ({ children, ...rest }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -35,47 +36,22 @@ function App() {
   return (
     <div>
       <Routes>
-        <Route index path="/" element={<Login/>} />
+        <Route index path="/" element={<Login />} />
         {/* <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} /> */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
 
-     
         <Route path="/dashboard" element={<HeaderAndSidebar />}>
           <Route index element={<Dashboard />} />
-          <Route
-            path="products"
-            element={<Products/>
-              
-            }
-          />
-          <Route
-            path="report"
-            element={
-           <Report/>
-            }
-          />
-          <Route
-            path="supplier"
-            element={
-           <Sales/>
-            }
-          />
-          <Route
-            path="orders"
-            element={
-              <Orders/>
-            }
-          />
-           <Route
-            path="stores"
-            element={
-              <Stores/>
-            }
-          />
+          <Route path="sales" element={<Sales />} />
+          <Route path="products" element={<Products />} />
+          <Route path="report" element={<Report />} />
+          <Route path="supplier" element={<Suppliers />} />
+          <Route path="orders" element={<Orders />} />
+          <Route path="stores" element={<Stores />} />
         </Route>
-    
+
         <Route
           path="*"
           element={
@@ -85,8 +61,6 @@ function App() {
           }
         />
       </Routes>
-     
-
     </div>
   );
 }
