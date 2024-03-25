@@ -183,10 +183,10 @@ const Login = () => {
                           </form>
                           <div className="row">
                             <div className="col-12">
-                              <p className="mb-0 mt-5 text-secondary text-center">
+                              {/* <p className="mb-0 mt-5 text-secondary text-center">
                                 NO account yet?{" "}
                                 <NavLink to="/signup">Sign up</NavLink>
-                              </p>
+                              </p> */}
                             </div>
                           </div>
                         </div>

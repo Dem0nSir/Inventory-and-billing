@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Offcanvas from "react-bootstrap/Offcanvas";
@@ -24,13 +23,17 @@ function AddProduct() {
       [name]: value,
     }));
   };
-  console.log(formData)
+  console.log(formData);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const assetCollectionRef = collection(db, 'products')
-      await addDoc(assetCollectionRef, formData)
+      const today = new Date();
+      const formattedDate = `${today.getFullYear()}-${
+        today.getMonth() + 1
+      }-${today.getDate()}`;
+      const assetCollectionRef = collection(db, "products");
+      await addDoc(assetCollectionRef, { ...formData, addedOn: formattedDate });
       console.log("Form Data Saved to Firestore:", formData);
       handleClose();
       setFormData({
@@ -38,6 +41,7 @@ function AddProduct() {
         buyingPrice: "",
         quantity: "",
         sellingPrice: "",
+        supplier: "",
         productStatus: "In-Stock",
       });
     } catch (error) {
@@ -58,32 +62,66 @@ function AddProduct() {
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Product</Form.Label>
-              <Form.Control type="text" placeholder="Product Name" name="productName" onChange={handleChange}/>
+              <Form.Control
+                type="text"
+                placeholder="Product Name"
+                name="productName"
+                onChange={handleChange}
+              />
               {/* <Form.Text className="text-muted">
                 We'll never share your email with anyone else.
               </Form.Text> */}
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Buying Price</Form.Label>
-              <Form.Control type="text" placeholder="Buying Price"  name="buyingPrice" onChange={handleChange} />
+              <Form.Control
+                type="text"
+                placeholder="Buying Price"
+                name="buyingPrice"
+                onChange={handleChange}
+              />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Quantity</Form.Label>
-              <Form.Control type="number" placeholder="Quantity"   name="quantity" onChange={handleChange}/>
+              <Form.Control
+                type="number"
+                placeholder="Quantity"
+                name="quantity"
+                onChange={handleChange}
+              />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Selling Price</Form.Label>
-              <Form.Control type="text" placeholder="Selling Price"  name="sellingPrice" onChange={handleChange}/>
+              <Form.Control
+                type="text"
+                placeholder="Selling Price"
+                name="sellingPrice"
+                onChange={handleChange}
+              />
             </Form.Group>
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Label>Supplier</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Supplier"
+                name="supplier"
+                onChange={handleChange}
+              />
+            </Form.Group>
+            {/* <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Label>Added On</Form.Label>
+              <Form.Control type="text" placeholder="A"  name="supplier" onChange={handleChange}/>
+            </Form.Group> */}
             <Form.Group className="mb-3" controlId="formProduct">
               <Form.Label>Select Product</Form.Label>
               <Form.Select
-               name="productStatus"
-              //  value={formData.productStatus}
-               onChange={handleChange}>
+                name="productStatus"
+                //  value={formData.productStatus}
+                onChange={handleChange}
+              >
                 <option value="In-Stock">In-Stock</option>
                 <option value="Out-of-Stock">Out-of-Stock</option>
-                <option value="Stopped">Stopped</option>
+                <option value="Discontinued">Discontinued</option>
                 {/* Add more options as needed */}
               </Form.Select>
             </Form.Group>

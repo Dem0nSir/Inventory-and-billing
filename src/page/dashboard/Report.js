@@ -86,7 +86,7 @@ const Report = () => {
             <div className="col-6 mb-4">
               <div className="card m-4 h-100">
                 <div className="mx-4 mt-3 fw-bold d-flex justify-content-between">
-                  <div className="fs-3">Best selling category</div>
+                  <div className="fs-3">Recently Added Product</div>
                   <div className="dropdown">
                     <button
                       className="btn btn-secondary dropdown-toggle"

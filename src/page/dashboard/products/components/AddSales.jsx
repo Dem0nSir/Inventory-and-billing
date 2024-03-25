@@ -45,9 +45,12 @@ const AddSales = () => {
         orderId: "",
         customerName: "",
         itemsName: "",
+        phoneNumber: "",
+        itemName:"",
         itemCost:"",
         itemSold: "",
         salesChannel: "",
+        payment:"",
         paymentMethod: "",
         salesTotal: "",
       });
@@ -88,7 +91,7 @@ const AddSales = () => {
             {/* <Form.Group className="mb-3">
               <Form.Label>Sales Date</Form.Label>
               <Form.Control type="date" name="salesDate"  onChange={handleChange}/>
-            </Form.Group>
+            </Form.Group> */}
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
               <Form.Label>Customer Name</Form.Label>
               <Form.Control
@@ -98,7 +101,17 @@ const AddSales = () => {
                 onChange={handleChange}
                 autoFocus
               />
-            </Form.Group> */}
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+              <Form.Label>Phone Number</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter Phone Number"
+                name="phoneNumber"
+                onChange={handleChange}
+                autoFocus
+              />
+            </Form.Group>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
               <Form.Label>Items Name</Form.Label>
               <Form.Control
@@ -140,6 +153,19 @@ const AddSales = () => {
                 <option value="Online">Online</option>
                 <option value="Physical Store">Physical Store</option>
                 <option value="Phone Order">Phone Order</option>
+              </Form.Select>
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+              <Form.Label>Payment </Form.Label>
+              <Form.Select
+                aria-label="Default select example"
+                name="payment"
+                onChange={handleChange}
+              >
+                <option selected>Payment</option>
+                <option value="pending">Pending</option>
+                <option value="Full Payment">Full Payment</option>
+                
               </Form.Select>
             </Form.Group>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">

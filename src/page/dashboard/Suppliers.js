@@ -166,6 +166,7 @@ const Suppliers = () => {
                     <th>Supplier Name</th>
                     <th>Product</th>
                     <th>Contact Number</th>
+                    <th>Address</th>
                     <th>Email</th>
                     <th>Type</th>
                     <th></th>
@@ -177,6 +178,7 @@ const Suppliers = () => {
                       <td>{supplier.SupplierName}</td>
                       <td>{supplier.product}</td>
                       <td>{supplier.contactNumber}</td>
+                      <td>{supplier.address}</td>
                       <td>{supplier.email}</td>
                       <td>{supplier.productType}</td>
                       <td>

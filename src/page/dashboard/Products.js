@@ -153,7 +153,8 @@ const Products = (props) => {
                     <th>Buying Price</th>
                     <th>Quantity</th>
                     <th>Selling Price</th>
-                    <th>Expiry Date</th>
+                    <th>Supplier</th>
+                    <th>Added on</th>
                     <th>Availabe</th>
                     <th></th>
                   </tr>
@@ -165,8 +166,8 @@ const Products = (props) => {
                       <td>{product.buyingPrice}</td>
                       <td>{product.quantity}</td>
                       <td>{product.sellingPrice}</td>
-                      <td>-</td>
-                      {/* <td>{product.productStatus}</td> */}
+                      <td>{product.supplier}</td>
+                      <td>{product.addedOn}</td>
                       <td>
                         {product.productStatus === "In-Stock" && (
                           <span className="badge bg-success p-1 text-muted">

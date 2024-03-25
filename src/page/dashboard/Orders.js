@@ -167,21 +167,26 @@ const[order,setOrder]= useState([])
             <table class="table">
               <thead>
                 <tr class="fw-bold fs-6 text-gray-800">
+                <th>Order ID</th>
                   <th>Products</th>
-                  <th>Order Value</th>
+                  <th>Product Price</th>
                   <th>Quantity</th>
-                  <th>Order ID</th>
+                  <th>Total</th>
+                  <th>Placed on</th>
                   <th>Expected Delivery</th>
                   <th>Status</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
               {order.map((item) => (
                     <tr key={item.id}>
-                      <td>{item.productName}</td>
                       <td>{item.orderId}</td>
+                      <td>{item.productName}</td>
+                      
                       <td>{item.quantity}</td>
                       <td>{item.orderId}</td>
+                      <td>{item.orderPlacedDate}</td>
                       <td>{item.expectedDeliveryDate}</td>
                       <td>{item.productStatus}</td>
                       <td>

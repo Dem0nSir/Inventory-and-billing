@@ -9,9 +9,11 @@ function AddOrder() {
   const [show, setShow] = useState(false);
   const [formData, setFormData] = useState({
     productName: "",
-    orderValue: "",
+    productPrice: "",
     quantity: "",
+    total:"",
     orderId: "",
+    orderPlacedDate: "",
     expectedDeliveryDate: "",
     productStatus: "",
 
@@ -37,8 +39,10 @@ function AddOrder() {
       handleClose();
       setFormData({
         productName: "",
-        orderValue: "",
+        productPrice: "",
         quantity: "",
+        total:"",
+        placedOn:"",
         orderId: "",
         expectedDeliveryDate: "",
         productStatus: "",
@@ -59,6 +63,15 @@ function AddOrder() {
         </Offcanvas.Header>
         <Offcanvas.Body>
           <Form onSubmit={handleSubmit}>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Label>Order ID</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter Order Id"
+                name="orderId"
+                onChange={handleChange}
+              />
+            </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Product</Form.Label>
               <Form.Control
@@ -72,8 +85,8 @@ function AddOrder() {
               <Form.Label>Order Value</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Order Value"
-                name="orderValue"
+                placeholder="Product Price"
+                name="productPrice"
                 onChange={handleChange}
               />
             </Form.Group>
@@ -87,14 +100,24 @@ function AddOrder() {
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Order ID</Form.Label>
+              <Form.Label>Total</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Enter Order Id"
-                name="orderId"
+                placeholder="Total"
+                name="total"
                 onChange={handleChange}
               />
             </Form.Group>
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Label>Placed On</Form.Label>
+              <Form.Control
+                type="date"
+                placeholder=""
+                name="orderPlacedDate"
+                onChange={handleChange}
+              />
+            </Form.Group>
+            
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Expected Delivery</Form.Label>
               <Form.Control
@@ -114,7 +137,10 @@ function AddOrder() {
                 <option value="" disabled selected>
                   Select status
                 </option>
+
                 <option value="Confirmed">Confirmed</option>
+                <option value="In progress">In progress</option>
+                <option value="Delivered">Delivered</option>
                 <option value="Cancelled">Cancelled</option>
                 <option value="Returned">Returned</option>
                 

@@ -152,7 +152,7 @@ export default function Invoice() {
                 className="ms-0 "
                 style={{ color: "#5d9fc5" }}
               />
-              <p className="pt-0">MDBootstrap.com</p>
+              <p className="pt-0">Shakya Handicraft</p>
             </MDBCol>
           </MDBContainer>
           <MDBRow>

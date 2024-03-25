@@ -171,9 +171,12 @@ const Sales = () => {
                     <th>Order ID</th>
                     <th>Sales Date</th>
                     <th>Customer Name</th>
-                    <th>Items Name</th>
-                    <th>Item Sold</th>
+                    <th>Phone Number</th>
+                    <th>Item Name</th>
+                    <th>Item Price</th>
+                    <th>Item Quantity</th>
                     <th>Sales Channel</th>
+                    <th>Payment</th>
                     <th>Payment Method</th>
                     <th>Sales Total</th>
                     <th></th>
@@ -185,9 +188,12 @@ const Sales = () => {
                       <td>{sale.orderId}</td>
                       <td>{sale.salesDate}</td>
                       <td>{sale.customerName}</td>
+                      <td>{sale.phoneNumber}</td>
                       <td>{sale.itemsName}</td>
+                      <td>{sale.itemCost}</td>
                       <td>{sale.itemSold}</td>
                       <td>{sale.salesChannel}</td>
+                      <td>{sale.payment}</td>
                       <td>{sale.paymentMethod}</td>
                       <td>{sale.salesTotal}</td>
                       <td>
@@ -212,7 +218,6 @@ const Sales = () => {
           </div>
         </div>
       </div>
-     
     </>
   );
 };

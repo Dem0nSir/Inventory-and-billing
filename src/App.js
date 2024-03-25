@@ -16,6 +16,7 @@ import Stores from "./page/dashboard/Stores";
 import Report from "./page/dashboard/Report";
 import Suppliers from "./page/dashboard/Suppliers";
 import Invoice from "./page/dashboard/products/print/Invoice";
+import CreateAccount from "./page/dashboard/products/components/CreateAccount";
 
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-beta1/js/bootstrap.bundle.min.js"></script>;
 const ProtectedRoute = ({ children, ...rest }) => {
@@ -51,9 +52,9 @@ function App() {
           <Route path="supplier" element={<Suppliers />} />
           <Route path="orders" element={<Orders />} />
           <Route path="stores" element={<Stores />} />
-   
+          <Route path="createAccount" element={<CreateAccount />} />
         </Route>
-      
+
         <Route
           path="*"
           element={

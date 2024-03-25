@@ -36,6 +36,7 @@ function Addsupplier() {
         SupplierName: "",
         product: "",
         contactNumber: "",
+        address:"",
         email: "",
         productType: "",
       });
@@ -77,8 +78,17 @@ function Addsupplier() {
               <Form.Label>Contact number</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Enter your Contact number"
+                placeholder="Enter  Contact number"
                 name="contactNumber"
+                onChange={handleChange}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Label>Address</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter address"
+                name="address"
                 onChange={handleChange}
               />
             </Form.Group>
@@ -101,8 +111,8 @@ function Addsupplier() {
                 <option value="" disabled selected>
                   Select a Type
                 </option>
-                <option value="In-Stock">Taking Return</option>
-                <option value="Out-of-Stock">Not Taking Return</option>
+                <option value="Taking Return">Taking Return</option>
+                <option value="Not Taking Return">Not Taking Return</option>
               </Form.Select>
             </Form.Group>
 
