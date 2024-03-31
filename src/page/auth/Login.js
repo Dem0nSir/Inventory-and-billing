@@ -12,19 +12,33 @@ const Login = () => {
 
   const onLogin = (e) => {
     e.preventDefault();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (email === "" || password === "") {
+      setError("Please fill in all fields");
+      return;
+    }
+    if (!emailRegex.test(email)) {
+      setError("Invalid email format");
+      return;
+    }
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        console.log('Signed in as', user);
-        console.log('Attempting to navigate to dashboard');
+        console.log("Signed in as", user);
+        console.log("Attempting to navigate to dashboard");
         navigate("/dashboard");
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-    
-        setError(errorMessage);
+        if (errorCode === "auth/invalid-credential") {
+          setError("Please enter valid email and password");
+        } else {
+          setError(errorMessage);
+        }
+
+        // setError(errorMessage);
         console.log(errorCode, errorMessage);
       });
   };
@@ -53,62 +67,25 @@ const Login = () => {
                             <div className="col-12">
                               <div className="mb-8">
                                 <div className="text-center mb-6">
-                                  
-                                    {/* <img
+                                  {/* <img
                                       src="./assets/img/bsb-logo.svg"
                                       alt="BootstrapBrain Logo"
                                       width="175"
                                       height="57"
                                     /> */}
-                                    <h1 className="fw-bold text-muted">Inventory Management System</h1>
-                                 
+                                  <h1 className="fw-bold text-muted">
+                                    Inventory Management System
+                                  </h1>
                                 </div>
                                 <h2 className="h4 text-center">Login</h2>
                               </div>
                             </div>
                           </div>
-                          {/* <div className="row">
-                            <div className="col-12">
-                              <div className="d-flex gap-3 flex-column">
-                                <a
-                                  href="#!"
-                                  className="btn btn-lg btn-outline-dark"
-                                >
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="16"
-                                    height="16"
-                                    fill="currentColor"
-                                    className="bi bi-google"
-                                    viewBox="0 0 16 16"
-                                  >
-                                    <path d="M15.545 6.558a9.42 9.42 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.689 7.689 0 0 1 5.352 2.082l-2.284 2.284A4.347 4.347 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.304a4.792 4.792 0 0 0 0 3.063h.003c.635 1.893 2.405 3.301 4.492 3.301 1.078 0 2.004-.276 2.722-.764h-.003a3.702 3.702 0 0 0 1.599-2.431H8v-3.08h7.545z" />
-                                  </svg>
-                                  <span className="ms-2 fs-6">
-                                    Log in with Google
-                                  </span>
-                                </a>
-                              </div>
-                              <p className="text-center mt-4 mb-5">
-                                Or enter your details to register
-                              </p>
-                            </div>
-                          </div> */}
-                          <form action="#!">
-                            {error && error}
+                          <form>
+                            {error && (
+                              <div className="alert alert-danger">{error}</div>
+                            )}
                             <div className="row gy-3 overflow-hidden">
-                              {/* <div className="col-12">
-                        <div className="form-floating mb-3">
-                          <input type="text" className="form-control" name="firstName" id="firstName" placeholder="First Name" required/>
-                          <label for="firstName" className="form-label">First Name</label>
-                        </div>
-                      </div>
-                      <div className="col-12">
-                        <div className="form-floating mb-3">
-                          <input type="text" className="form-control" name="lastName" id="lastName" placeholder="First Name" required/>
-                          <label for="lastName" className="form-label">Last Name</label>
-                        </div>
-                      </div> */}
                               <div className="col-12">
                                 <div className="form-floating mb-3">
                                   <input
@@ -125,6 +102,7 @@ const Login = () => {
                                   </label>
                                 </div>
                               </div>
+
                               <div className="col-12">
                                 <div className="form-floating mb-3">
                                   <input
@@ -144,7 +122,7 @@ const Login = () => {
                                   </label>
                                 </div>
                               </div>
-                              <div className="col-12">
+                              {/* <div className="col-12">
                                 <div className="form-check">
                                   <input
                                     className="form-check-input"
@@ -167,7 +145,7 @@ const Login = () => {
                                     </a>
                                   </label>
                                 </div>
-                              </div>
+                              </div> */}
                               <div className="col-12">
                                 <div className="d-grid">
                                   <button

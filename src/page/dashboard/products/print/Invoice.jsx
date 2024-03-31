@@ -44,7 +44,7 @@ export default function Invoice( {id}) {
   };
   return (
     <>
-      <Button variant="primary" onClick={handleShow} className="btn btn-sm btn-primary">
+      <Button variant="primary" onClick={handleShow} className="btn btn-sm btn-success">
         Bill
       </Button>
       <Modal show={show} onHide={closeModal} size="xl">
@@ -144,8 +144,17 @@ export default function Invoice( {id}) {
                           icon="circle"
                           style={{ color: "#84B0CA" }}
                         />
+                        <span className="fw-bold ms-1">Payment method: </span>{formData.paymentMethod}
+                        
+                      </li>
+                      <li className="text-muted">
+                        <MDBIcon
+                          fas
+                          icon="circle"
+                          style={{ color: "#84B0CA" }}
+                        />
                         <span className="fw-bold ms-1">Status:</span>
-                        <span className="badge bg-warning text-black fw-bold ms-1">
+                        <span className="badge bg-success text-black fw-bold ms-1">
                          {formData.payment}
                         </span>
                       </li>

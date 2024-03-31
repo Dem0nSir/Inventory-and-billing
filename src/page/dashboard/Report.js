@@ -1,14 +1,112 @@
-import React, { useState } from "react";
+import { collection, doc, getDoc, getDocs } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
 import { Dropdown } from "react-bootstrap";
+import { db } from "../services/firebase";
 
 const Report = () => {
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [formData, setFormData] = useState([]);
+  const [selectedPeriod, setSelectedPeriod] = useState("Yearly");
+  const [filteredData, setFilteredData] = useState([]);
+  useEffect(() => {
+    getProducts();
+
+  }, [showEditModal,selectedPeriod]);
+  useEffect(() => {
+    let filtered;
+    const currentDate = new Date();
+    
+    switch(selectedPeriod) {
+      case 'Yearly':
+        filtered = formData.filter(product => {
+          const productDate = new Date(product.addedOn);
+          return productDate.getFullYear() === currentDate.getFullYear();
+        });
+        break;
+      case 'Monthly':
+        filtered = formData.filter(product => {
+          const productDate = new Date(product.addedOn);
+          return productDate.getFullYear() === currentDate.getFullYear() && productDate.getMonth() === currentDate.getMonth();
+        });
+        break;
+      case 'Weekly':
+        const oneWeekAgo = new Date();
+        oneWeekAgo.setDate(currentDate.getDate() - 7);
+        filtered = formData.filter(product => {
+          const productDate = new Date(product.addedOn);
+          return productDate >= oneWeekAgo;
+        });
+        break;
+      default:
+        filtered = formData;
+    }
+  
+    setFilteredData(filtered);
+  }, [selectedPeriod, formData]);
+
+  const getProducts = async () => {
+    try {
+      const productsCollection = collection(db, "products");
+      const querySnapshot = await getDocs(productsCollection);
+
+      const productsData = [];
+      querySnapshot.forEach((doc) => {
+        // Retrieve data from each document and push it into the productsData array
+        productsData.push({ id: doc.id, ...doc.data() });
+      });
+
+      setFormData(productsData);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+      return []; // Return an empty array in case of an error
+    }
+  };
+  console.log(formData);
+
+  // const filterDataByPeriod = () => {
+  //   const currentDate = new Date();
+  //   const oneWeekAgo = new Date(
+  //     currentDate.getTime() - 7 * 24 * 60 * 60 * 1000
+  //   );
+
+  //   // Filter data based on selected period
+  //   switch (selectedPeriod) {
+  //     case "Yearly":
+  //       return formData.filter((item) => {
+  //         const itemDate = new Date(item.addedOn);
+  //         return itemDate.getFullYear() === currentDate.getFullYear();
+  //       });
+
+  //     case "Monthly":
+  //       return formData.filter((item) => {
+  //         const itemDate = new Date(item.addedOn);
+  //         return (
+  //           itemDate.getFullYear() === currentDate.getFullYear() &&
+  //           itemDate.getMonth() === currentDate.getMonth()
+  //         );
+  //       });
+
+  //     case "Weekly":
+  //       return formData.filter((item) => {
+  //         const itemDate = new Date(item.addedOn);
+  //         return itemDate >= oneWeekAgo && itemDate <= currentDate;
+  //       });
+
+  //     default:
+  //       return formData;
+  //   }
+  // };
+
+  // const filteredData = filterDataByPeriod();
+  // console.log("f", filteredData);
+
   return (
     <>
       <div className="bg-white h-screen">
         <div class="ml-auto mb-6 lg:w-[75%] xl:w-[80%] 2xl:w-[85%]">
           <div class="sticky z-10 top-0 h-16 border-b bg-white lg:py-2.5">
             <div class="px-6 flex items-center justify-between space-x-4 2xl:container">
-              <h5  class="text-2xl text-gray-600 font-medium lg:block text-center">
+              <h5 class="text-2xl text-gray-600 font-medium lg:block text-center">
                 Inventory Management system
               </h5>
             </div>
@@ -17,7 +115,6 @@ const Report = () => {
             <div className="col-6 mb-4">
               <div className="card m-4 h-100">
                 <div className="mx-4 mt-3 fw-bold d-flex justify-content-between">
-                  
                   <div className="fs-3">Overview</div>
                   <Dropdown>
                     <Dropdown.Toggle variant="success" id="dropdown-basic">
@@ -87,63 +184,49 @@ const Report = () => {
               <div className="card m-4 h-100">
                 <div className="mx-4 mt-3 fw-bold d-flex justify-content-between">
                   <div className="fs-3">Recently Added Product</div>
-                  <div className="dropdown">
-                    <button
-                      className="btn btn-secondary dropdown-toggle"
-                      type="button"
-                      id="dropdownMenuButton"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
-                    >
+                  <Dropdown>
+                    <Dropdown.Toggle variant="success" id="dropdown-basic">
                       Select Period
-                    </button>
-                    <ul
-                      className="dropdown-menu"
-                      aria-labelledby="dropdownMenuButton"
-                    >
-                      <li>
-                        <a className="dropdown-item" href="#">
-                          Yearly
-                        </a>
-                      </li>
-                      <li>
-                        <a className="dropdown-item" href="#">
-                          Monthly
-                        </a>
-                      </li>
-                      <li>
-                        <a className="dropdown-item" href="#">
-                          Weekly
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu>
+                      <Dropdown.Item
+                        onClick={() => setSelectedPeriod("Yearly")}
+                      >
+                        Yearly
+                      </Dropdown.Item>
+                      <Dropdown.Item
+                        onClick={() => setSelectedPeriod("Monthly")}
+                      >
+                        Monthly
+                      </Dropdown.Item>
+                      <Dropdown.Item
+                        onClick={() => setSelectedPeriod("Weekly")}
+                      >
+                        Weekly
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
                 </div>
                 <div class="table-responsive m-4">
                   <table class="table">
                     <thead>
                       <tr class="fw-bold fs-6 text-gray-800">
-                        <th>Category</th>
-                        <th>Turn Over</th>
-                        <th>Increase By</th>
+                        <th>Product</th>
+                        <th>Buying Price</th>
+                        <th>Quantity</th>
+                        <th>Date</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>Aayu Shakya</td>
-                        <td>Cakes</td>
-                        <td>1234567890</td>
-                      </tr>
-                      <tr>
-                        <td>Aayu Shakya</td>
-                        <td>Coffee</td>
-                        <td>1234567890</td>
-                      </tr>
-                      <tr>
-                        <td>Aayu Shakya</td>
-                        <td>Shoes</td>
-                        <td>1234567890</td>
-                      </tr>
+                      {filteredData.map((product) => (
+                        <tr key={product.id}>
+                          <td>{product.productName}</td>
+                          <td>{product.buyingPrice}</td>
+                          <td>{product.quantity}</td>
+                          <td>{product.addedOn}</td>
+                        </tr>
+                      ))}
                     </tbody>
                   </table>
                 </div>
