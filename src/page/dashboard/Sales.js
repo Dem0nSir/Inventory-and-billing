@@ -10,7 +10,8 @@ const Sales = () => {
   const [sales, setSales] = useState([]);
   const [filteredSales, setFilteredSales] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  console.log(searchTerm);
+  const [showModal, setShowModal] = useState(false);
+
 
   useEffect(() => {
     setFilteredSales(sales);
@@ -33,7 +34,10 @@ const Sales = () => {
     const Doc = doc(db, "sales", id);
     return deleteDoc(Doc);
   };
-  console.log(sales);
+
+  const openModal = () => {
+    setShowModal(true);
+  };
 
   const handleInputChange = (e) => {
     const searchTerm = e.target.value.toLowerCase();
@@ -145,13 +149,10 @@ const Sales = () => {
                       <td>{sale.paymentMethod}</td>
                       <td>{sale.salesTotal}</td>
                       <td>
-                        {/* <button
-                          className="btn btn-sm btn-primary mx-2"
-                          // onClick={navigate('/sales/bill')}
-                        >
-                          Bill
-                        </button> */}
+                     
                         <div className="d-flex align-items-center">
+                        <Invoice id={sale.id}/>
+                        {/* <button className="btn btn-sm btn-primary" onClick={openModal}>Bill</button> */}
                           <EditSales id={sale.id} />
                           <button
                             className="btn btn-sm btn-danger mx-1"
@@ -166,6 +167,8 @@ const Sales = () => {
                   ))}
                 </tbody>
               </table>
+              {/* {showModal && <Invoice closeModal={() => setShowModal(false)} />} */}
+          
             </div>
           </div>
         </div>
