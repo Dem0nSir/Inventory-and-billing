@@ -1,27 +1,34 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useNavigate } from "react-router-dom";
-import { addDoc, collection } from "firebase/firestore";
-import { db } from "../../../services/firebase";
 import Invoice from "../print/Invoice";
-const AddSales = () => {
+import databaseServices from "./services/database.services";
+
+const EditSales = ({ id }) => {
   const [show, setShow] = useState(false);
+  const [message, setMessage] = useState({ error: false, msg: "" });
+  const [formData, setFormData] = useState({});
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    editHandler();
+  }, []);
+  console.log(id)
 
-  const [formData, setFormData] = useState({
-    orderId: "",
-    customerName: "",
-    itemsName: "",
-    itemCost:"",
-    itemSold: "",
-    salesChannel: "",
-    paymentMethod: "",
-    salesTotal: "",
-  });
-
+  const editHandler = async () => {
+    try {
+      const docSnap = await databaseServices.getPolicy(id);
+      console.log(docSnap.data());
+        setFormData(docSnap.data());
+    } catch (error) {
+      setMessage({ error: true, msg: error.message });
+      //   setShowAlert(true)
+    }
+  };
+console.log(formData)
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevFormData) => ({
@@ -29,53 +36,38 @@ const AddSales = () => {
       [name]: value,
     }));
   };
-  console.log(formData)
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const today = new Date();
-      const formattedDate = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
-  
-      const assetCollectionRef = collection(db, 'sales')
-      await addDoc(assetCollectionRef, { ...formData, salesDate: formattedDate })
-      console.log("Form Data Saved to Firestore:", formData);
+    //   await updateDoc(db, "sales", sale.id, formData);
+    await databaseServices.updateSale(id, formData);
+      console.log("Form Data Updated in Firestore:", formData);
       handleClose();
-      setFormData({
-        orderId: "",
-        customerName: "",
-        itemsName: "",
-        phoneNumber: "",
-        itemName:"",
-        itemCost:"",
-        itemSold: "",
-        salesChannel: "",
-        payment:"",
-        paymentMethod: "",
-        salesTotal: "",
-      });
     } catch (error) {
-      console.error("Error saving form data:", error);
+      console.error("Error updating form data:", error);
     }
   };
 
   const handleClose = () => {
     setShow(false);
-    // navigate('/dashboard/sales');
+    // navigate("/dashboard/sales");
     window.location.reload();
   };
   const handleShow = () => setShow(true);
 
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
-        Add Sales
+      <Button variant="btn btn-sm btn-primary mx-2" onClick={handleShow}>
+        Edit
       </Button>
       {/* <Invoice  /> */}
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Sales Record</Modal.Title>
+          <Modal.Title>Edit Sales Record</Modal.Title>
         </Modal.Header>
+
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
@@ -86,6 +78,7 @@ const AddSales = () => {
                 name="orderId"
                 onChange={handleChange}
                 autoFocus
+                value={formData.orderId}
               />
             </Form.Group>
             {/* <Form.Group className="mb-3">
@@ -99,7 +92,7 @@ const AddSales = () => {
                 placeholder="Enter Customer Name"
                 name="customerName"
                 onChange={handleChange}
-            
+                value={formData.customerName}
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
@@ -109,7 +102,7 @@ const AddSales = () => {
                 placeholder="Enter Phone Number"
                 name="phoneNumber"
                 onChange={handleChange}
-              
+               value={formData.phoneNumber}
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
@@ -119,7 +112,7 @@ const AddSales = () => {
                 placeholder="Enter Items Name"
                 name="itemsName"
                 onChange={handleChange}
-             
+                value={formData.itemsName}
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
@@ -129,7 +122,7 @@ const AddSales = () => {
                 placeholder="Enter Item Cost"
                 name="itemCost"
                 onChange={handleChange}
-            
+                value={formData.itemCost}
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
@@ -139,7 +132,7 @@ const AddSales = () => {
                 placeholder="Enter Item Sold"
                 name="itemSold"
                 onChange={handleChange}
-              
+                value={formData.itemSold}
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
@@ -148,6 +141,7 @@ const AddSales = () => {
                 aria-label="Default select example"
                 name="salesChannel"
                 onChange={handleChange}
+                value={formData.salesChannel}
               >
                 <option selected>Select Sales Channel</option>
                 <option value="Online">Online</option>
@@ -161,11 +155,11 @@ const AddSales = () => {
                 aria-label="Default select example"
                 name="payment"
                 onChange={handleChange}
+             value={formData.payment}
               >
                 <option selected>Payment</option>
                 <option value="pending">Pending</option>
                 <option value="Full Payment">Full Payment</option>
-                
               </Form.Select>
             </Form.Group>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
@@ -174,6 +168,7 @@ const AddSales = () => {
                 aria-label="Default select example"
                 name="paymentMethod"
                 onChange={handleChange}
+            value={formData.paymentMethod}
               >
                 <option selected>Select Payment Method</option>
                 <option value="Cash">Cash</option>
@@ -188,7 +183,7 @@ const AddSales = () => {
                 placeholder="Enter Sales Total"
                 name="salesTotal"
                 onChange={handleChange}
-           
+               value={formData.salesTotal}
               />
             </Form.Group>
           </Form>
@@ -198,7 +193,7 @@ const AddSales = () => {
             Close
           </Button>
           <Button variant="primary" onClick={handleSubmit}>
-            Add Record
+            Edit Record
           </Button>
         </Modal.Footer>
       </Modal>
@@ -206,4 +201,4 @@ const AddSales = () => {
   );
 };
 
-export default AddSales;
+export default EditSales;

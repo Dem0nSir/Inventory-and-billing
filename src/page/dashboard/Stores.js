@@ -1,10 +1,40 @@
 import React, { useEffect, useState } from "react";
 import AddStore from "./products/components/AddStore";
-import { collection, deleteDoc, doc, onSnapshot } from "firebase/firestore";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  onSnapshot,
+  serverTimestamp,
+  updateDoc,
+} from "firebase/firestore";
 import { db } from "../services/firebase";
+import { Button, Form, Offcanvas } from "react-bootstrap";
 
 const Stores = () => {
   const [stores, setStores] = useState([]);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [formData, setFormData] = useState([]);
+  const [editProductId, setEditProductId] = useState();
+
+  useEffect(() => {
+    editHandler();
+  }, [showEditModal]);
+
+  const editHandler = async () => {
+    try {
+      const productDoc = doc(db, "stores", editProductId);
+      const docSnap = await getDoc(productDoc);
+      if (docSnap.exists()) {
+        setFormData(docSnap.data());
+      } else {
+        console.error("Product not found!");
+      }
+    } catch (error) {
+      console.error("Error fetching product:", error);
+    }
+  };
 
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, "stores"), (snapshot) => {
@@ -21,6 +51,41 @@ const Stores = () => {
   const handleDelete = (id) => {
     const Doc = doc(db, "stores", id);
     return deleteDoc(Doc);
+  };
+  const handleEdit = (id) => {
+    // setEditProduct(product);
+    // editHandler();
+    setEditProductId(id);
+    setShowEditModal(true);
+  };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+  };
+
+  const handleClose = () => setShowEditModal(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const saleDoc = doc(db, "stores", editProductId);
+
+      // Update 'updated_at' timestamp
+      const policyWithTimestamp = {
+        ...formData,
+        updated_at: serverTimestamp(),
+      };
+
+      await updateDoc(saleDoc, policyWithTimestamp);
+
+      console.log("Form Data Saved to Firestore:", formData);
+      handleClose();
+    } catch (error) {
+      console.error("Error saving form data:", error);
+    }
   };
   console.log(stores);
   return (
@@ -48,81 +113,6 @@ const Stores = () => {
                   />
                 </svg>
               </button>
-              <div class="flex space-x-4">
-                <div hidden class="md:block">
-                  <div class="relative flex items-center text-gray-400 focus-within:text-cyan-400">
-                    <span class="absolute left-4 h-6 flex items-center pr-3 border-r border-gray-300">
-                      <svg
-                        xmlns="http://ww50w3.org/2000/svg"
-                        class="w-4 fill-current"
-                        viewBox="0 0 35.997 36.004"
-                      >
-                        <path
-                          id="Icon_awesome-search"
-                          data-name="search"
-                          d="M35.508,31.127l-7.01-7.01a1.686,1.686,0,0,0-1.2-.492H26.156a14.618,14.618,0,1,0-2.531,2.531V27.3a1.686,1.686,0,0,0,.492,1.2l7.01,7.01a1.681,1.681,0,0,0,2.384,0l1.99-1.99a1.7,1.7,0,0,0,.007-2.391Zm-20.883-7.5a9,9,0,1,1,9-9A8.995,8.995,0,0,1,14.625,23.625Z"
-                        ></path>
-                      </svg>
-                    </span>
-                    <input
-                      type="search"
-                      name="leadingIcon"
-                      id="leadingIcon"
-                      placeholder="Search here"
-                      class="w-full pl-14 pr-4 py-2.5 rounded-xl text-sm text-gray-600 outline-none border border-gray-300 focus:border-cyan-300 transition"
-                    />
-                  </div>
-                </div>
-
-                <button
-                  aria-label="search"
-                  class="w-10 h-10 rounded-xl border bg-gray-100 focus:bg-gray-100 active:bg-gray-200 md:hidden"
-                >
-                  <svg
-                    xmlns="http://ww50w3.org/2000/svg"
-                    class="w-4 mx-auto fill-current text-gray-600"
-                    viewBox="0 0 35.997 36.004"
-                  >
-                    <path
-                      id="Icon_awesome-search"
-                      data-name="search"
-                      d="M35.508,31.127l-7.01-7.01a1.686,1.686,0,0,0-1.2-.492H26.156a14.618,14.618,0,1,0-2.531,2.531V27.3a1.686,1.686,0,0,0,.492,1.2l7.01,7.01a1.681,1.681,0,0,0,2.384,0l1.99-1.99a1.7,1.7,0,0,0,.007-2.391Zm-20.883-7.5a9,9,0,1,1,9-9A8.995,8.995,0,0,1,14.625,23.625Z"
-                    ></path>
-                  </svg>
-                </button>
-                <button
-                  aria-label="chat"
-                  class="w-10 h-10 rounded-xl border bg-gray-100 focus:bg-gray-100 active:bg-gray-200"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="h-5 w-5 m-auto text-gray-600"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"
-                    />
-                  </svg>
-                </button>
-                <button
-                  aria-label="notification"
-                  class="w-10 h-10 rounded-xl border bg-gray-100 focus:bg-gray-100 active:bg-gray-200"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="h-5 w-5 m-auto text-gray-600"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z" />
-                  </svg>
-                </button>
-              </div>
             </div>
           </div>
 
@@ -130,14 +120,14 @@ const Stores = () => {
             <div className="mx-3 mt-3 fs-4 d-flex align-items-center">
               <span>Manage Store</span>
               <div className="ms-auto mx-2">
-                <input
+                {/* <input
                   type="text"
                   data-kt-user-table-filter="search"
                   className="form-control form-control-solid w-250px ps-14"
                   placeholder="Search stores"
-                  // value={searchTerm}
-                  // onChange={(e) => setSearchTerm(e.target.value)}
-                />
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                /> */}
               </div>
               {/* <button className="btn btn-primary mx-4">Add Store</button> */}
               <AddStore />
@@ -164,7 +154,8 @@ const Stores = () => {
                     {/* Edit button */}
                     <div className="col-1 d-flex align-items-center justify-content-end">
                       <button
-                        className="btn btn-primary"
+                        className="btn btn-sm btn-primary me-2"
+                        onClick={() => handleEdit(store.id)}
                         style={{ width: "100px" }}
                       >
                         Edit
@@ -175,6 +166,66 @@ const Stores = () => {
               </>
             ))}
           </div>
+          <Offcanvas
+            show={showEditModal}
+            onHide={() => setShowEditModal(false)}
+            placement="end"
+          >
+            <Offcanvas.Header closeButton>
+              <Offcanvas.Title>Edit Store</Offcanvas.Title>
+            </Offcanvas.Header>
+            <Offcanvas.Body>
+              <Form onSubmit={handleSubmit}>
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                  <Form.Label>Store Name</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Enter Store Name"
+                    name="storeName"
+                    onChange={handleChange}
+                    value={formData.storeName}
+                  />
+                  {/* <Form.Text className="text-muted">
+                We'll never share your email with anyone else.
+              </Form.Text> */}
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                  <Form.Label>Location</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Enter Location"
+                    name="location"
+                    onChange={handleChange}
+                    value={formData.location}
+                  />
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                  <Form.Label>Phone number</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Enter Phone number"
+                    name="phoneNumber"
+                    onChange={handleChange}
+                    value={formData.phoneNumber}
+                  />
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                  <Form.Label>Branch no.</Form.Label>
+                  <Form.Control
+                    type="number"
+                    placeholder="Enter branch number"
+                    name="branchNumber"
+                    onChange={handleChange}
+                    value={formData.branchNumber}
+                  />
+                </Form.Group>
+
+                <Button variant="primary" type="submit">
+                  Edit Store
+                </Button>
+              </Form>
+            </Offcanvas.Body>
+          </Offcanvas>
         </div>
       </div>
     </>

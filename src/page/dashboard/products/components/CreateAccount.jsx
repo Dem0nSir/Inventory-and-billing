@@ -217,10 +217,10 @@ const CreateAccount = () => {
                           </form>
                           <div className="row">
                             <div className="col-12">
-                              <p className="mb-0 mt-5 text-secondary text-center">
+                              {/* <p className="mb-0 mt-5 text-secondary text-center">
                                 Already have an account?{" "}
                                 <NavLink to="/login">Sign in</NavLink>
-                              </p>
+                              </p> */}
                               {/* <button onClick={navigate('/dashboard')}>Back to dashboard</button> */}
                             </div>
                           </div>

@@ -44,7 +44,7 @@ function AddStore() {
   return (
     <>
       <Button variant="primary" onClick={handleShow}>
-        Add Product
+        Add Store
       </Button>
 
       <Offcanvas show={show} onHide={handleClose} placement="end">

@@ -1,10 +1,63 @@
-import React, { useEffect, useState } from 'react'
-import AddOrder from './products/components/AddOrder'
-import { collection, deleteDoc, doc, onSnapshot } from 'firebase/firestore';
-import { db } from '../services/firebase';
+import React, { useEffect, useState } from "react";
+import AddOrder from "./products/components/AddOrder";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  onSnapshot,
+  serverTimestamp,
+  updateDoc,
+} from "firebase/firestore";
+import { db } from "../services/firebase";
+import { Button, Form, Offcanvas } from "react-bootstrap";
 
 const Orders = () => {
-const[order,setOrder]= useState([])
+  const [order, setOrder] = useState([]);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [formData, setFormData] = useState([]);
+  const [editProductId, setEditProductId] = useState();
+  const [filteredItems, setFilteredItems] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  console.log(searchTerm);
+
+  useEffect(() => {
+    setFilteredItems(order);
+  }, [order]);
+
+  useEffect(() => {
+    editHandler();
+  }, [showEditModal]);
+
+  const handleInputChange = (e) => {
+    const searchTerm = e.target.value.toLowerCase();
+    setSearchTerm(searchTerm);
+
+    // Assuming policy is your original data array
+    if (searchTerm === "") {
+      // If the search term is empty, reset to the original policies
+      setFilteredItems(order);
+    } else {
+      const filteredItems = order.filter((user) =>
+        user.productName.toLowerCase().includes(searchTerm)
+      );
+      setFilteredItems(filteredItems);
+    }
+  };
+
+  const editHandler = async () => {
+    try {
+      const productDoc = doc(db, "orders", editProductId);
+      const docSnap = await getDoc(productDoc);
+      if (docSnap.exists()) {
+        setFormData(docSnap.data());
+      } else {
+        console.error("Product not found!");
+      }
+    } catch (error) {
+      console.error("Error fetching product:", error);
+    }
+  };
 
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, "orders"), (snapshot) => {
@@ -17,85 +70,60 @@ const[order,setOrder]= useState([])
     // Unsubscribe from the snapshot listener when component unmounts
     return () => unsubscribe();
   }, []);
-  console.log(order)
+  console.log(order);
   const handleDelete = (id) => {
     const Doc = doc(db, "orders", id);
     return deleteDoc(Doc);
   };
+
+  const handleEdit = (id) => {
+    // setEditProduct(product);
+    // editHandler();
+    setEditProductId(id);
+    setShowEditModal(true);
+  };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+  };
+
+  const handleClose = () => setShowEditModal(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const saleDoc = doc(db, "orders", editProductId);
+
+      // Update 'updated_at' timestamp
+      const policyWithTimestamp = {
+        ...formData,
+        updated_at: serverTimestamp(),
+      };
+
+      await updateDoc(saleDoc, policyWithTimestamp);
+
+      console.log("Form Data Saved to Firestore:", formData);
+      handleClose();
+    } catch (error) {
+      console.error("Error saving form data:", error);
+    }
+  };
   return (
     <>
-    <div className="bg-white h-screen">
-      <div class="ml-auto mb-6 lg:w-[75%] xl:w-[80%] 2xl:w-[85%]">
-        <div class="sticky z-10 top-0 h-16 border-b bg-white lg:py-2.5">
-          <div class="px-6 flex items-center justify-between space-x-4 2xl:container">
-            <h5 hidden class="text-2xl text-gray-600 font-medium lg:block">
-              Dashboard
-            </h5>
-            <button class="w-12 h-16 -mr-2 border-r lg:hidden">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-6 w-6 my-auto"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
-            </button>
-            <div class="flex space-x-4">
-              <div hidden class="md:block">
-                <div class="relative flex items-center text-gray-400 focus-within:text-cyan-400">
-                  <span class="absolute left-4 h-6 flex items-center pr-3 border-r border-gray-300">
-                    <svg
-                      xmlns="http://ww50w3.org/2000/svg"
-                      class="w-4 fill-current"
-                      viewBox="0 0 35.997 36.004"
-                    >
-                      <path
-                        id="Icon_awesome-search"
-                        data-name="search"
-                        d="M35.508,31.127l-7.01-7.01a1.686,1.686,0,0,0-1.2-.492H26.156a14.618,14.618,0,1,0-2.531,2.531V27.3a1.686,1.686,0,0,0,.492,1.2l7.01,7.01a1.681,1.681,0,0,0,2.384,0l1.99-1.99a1.7,1.7,0,0,0,.007-2.391Zm-20.883-7.5a9,9,0,1,1,9-9A8.995,8.995,0,0,1,14.625,23.625Z"
-                      ></path>
-                    </svg>
-                  </span>
-                  <input
-                    type="search"
-                    name="leadingIcon"
-                    id="leadingIcon"
-                    placeholder="Search here"
-                    class="w-full pl-14 pr-4 py-2.5 rounded-xl text-sm text-gray-600 outline-none border border-gray-300 focus:border-cyan-300 transition"
-                  />
-                </div>
-              </div>
-
-              <button
-                aria-label="search"
-                class="w-10 h-10 rounded-xl border bg-gray-100 focus:bg-gray-100 active:bg-gray-200 md:hidden"
-              >
-                <svg
-                  xmlns="http://ww50w3.org/2000/svg"
-                  class="w-4 mx-auto fill-current text-gray-600"
-                  viewBox="0 0 35.997 36.004"
-                >
-                  <path
-                    id="Icon_awesome-search"
-                    data-name="search"
-                    d="M35.508,31.127l-7.01-7.01a1.686,1.686,0,0,0-1.2-.492H26.156a14.618,14.618,0,1,0-2.531,2.531V27.3a1.686,1.686,0,0,0,.492,1.2l7.01,7.01a1.681,1.681,0,0,0,2.384,0l1.99-1.99a1.7,1.7,0,0,0,.007-2.391Zm-20.883-7.5a9,9,0,1,1,9-9A8.995,8.995,0,0,1,14.625,23.625Z"
-                  ></path>
-                </svg>
-              </button>
-              <button
-                aria-label="chat"
-                class="w-10 h-10 rounded-xl border bg-gray-100 focus:bg-gray-100 active:bg-gray-200"
-              >
+      <div className="bg-white h-screen">
+        <div class="ml-auto mb-6 lg:w-[75%] xl:w-[80%] 2xl:w-[85%]">
+          <div class="sticky z-10 top-0 h-16 border-b bg-white lg:py-2.5">
+            <div class="px-6 flex items-center justify-between space-x-4 2xl:container">
+              <h5 hidden class="text-2xl text-gray-600 font-medium lg:block">
+                Dashboard
+              </h5>
+              <button class="w-12 h-16 -mr-2 border-r lg:hidden">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  class="h-5 w-5 m-auto text-gray-600"
+                  class="h-6 w-6 my-auto"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -104,111 +132,207 @@ const[order,setOrder]= useState([])
                     stroke-linecap="round"
                     stroke-linejoin="round"
                     stroke-width="2"
-                    d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"
+                    d="M4 6h16M4 12h16M4 18h16"
                   />
                 </svg>
               </button>
-              <button
-                aria-label="notification"
-                class="w-10 h-10 rounded-xl border bg-gray-100 focus:bg-gray-100 active:bg-gray-200"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-5 w-5 m-auto text-gray-600"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z" />
-                </svg>
-              </button>
             </div>
           </div>
-        </div>
 
-        <div className={`card mx-4 mb-2 mb-xl-8 mt-2`}>
-          <div className="card border-0 m-4 ">
-            <div className="d-flex align-items-center justify-content-between">
-              <div className="d-flex align-items-center">
-                <div className="symbol symbol-45px me-5">
-                  {/* <img src={toAbsoluteUrl(`/media/logos/${icon}`)} alt='' /> */}
+          <div className={`card mx-4 mb-2 mb-xl-8 mt-2`}>
+            <div className="card border-0 m-4 ">
+              <div className="d-flex align-items-center justify-content-between">
+                <div className="d-flex align-items-center">
+                  <div className="symbol symbol-45px me-5">
+                    {/* <img src={toAbsoluteUrl(`/media/logos/${icon}`)} alt='' /> */}
+                  </div>
+                  <div className="d-flex flex-column">
+                    <span className="card-label fw-bold fs-3">
+                      Overall Orders
+                    </span>
+                  </div>
                 </div>
-                <div className="d-flex flex-column">
-                  <span className="card-label fw-bold fs-3">
-                    Overall Orders
-                  </span>
-                </div>
+                <AddOrder />
               </div>
-              <AddOrder/>
-
             </div>
           </div>
-        </div>
 
-        <div className="card m-4 h-100">
-          <div className="mx-3 mt-3 fs-4 d-flex align-items-center">
-            <span>Orders</span>
-            
-            <div className="ms-auto ">
-          
-              <input
-                type="text"
-                data-kt-user-table-filter="search"
-                className="form-control form-control-solid w-250px ps-14"
-                placeholder="Search orders"
-                // value={searchTerm}
-                // onChange={(e) => setSearchTerm(e.target.value)}
-              />
+          <div className="card m-4 h-100">
+            <div className="mx-3 mt-3 fs-4 d-flex align-items-center">
+              <span>Orders</span>
+
+              <div className="ms-auto ">
+                <input
+                  type="text"
+                  data-kt-user-table-filter="search"
+                  className="form-control form-control-solid w-250px ps-14"
+                  placeholder="Search orders"
+                  value={searchTerm}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <button className="btn btn-primary mx-4">Download</button>
             </div>
-            <button className='btn btn-primary mx-4' >Download</button>
-          </div>
-         
 
-          <div class="table-responsive m-4">
-            <table class="table">
-              <thead>
-                <tr class="fw-bold fs-6 text-gray-800">
-                <th>Order ID</th>
-                  <th>Products</th>
-                  <th>Product Price</th>
-                  <th>Quantity</th>
-                  <th>Total</th>
-                  <th>Placed on</th>
-                  <th>Expected Delivery</th>
-                  <th>Status</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-              {order.map((item) => (
+            <div class="table-responsive m-4">
+              <table class="table">
+                <thead>
+                  <tr class="fw-bold fs-6 text-gray-800">
+                    <th>Order ID</th>
+                    <th>Products</th>
+                    <th>Product Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                    <th>Placed on</th>
+                    <th>Expected Delivery</th>
+                    <th>Status</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredItems.map((item) => (
                     <tr key={item.id}>
                       <td>{item.orderId}</td>
                       <td>{item.productName}</td>
-                      
+                      <td>{item.productPrice}</td>
                       <td>{item.quantity}</td>
-                      <td>{item.orderId}</td>
+                      <td>{item.total}</td>
                       <td>{item.orderPlacedDate}</td>
                       <td>{item.expectedDeliveryDate}</td>
                       <td>{item.productStatus}</td>
                       <td>
-                      <button
+                        <button
+                          className="btn btn-sm btn-primary me-2"
+                          onClick={() => handleEdit(item.id)}
+                        >
+                          Edit
+                        </button>
+                        <button
                           className="btn btn-sm btn-danger"
                           onClick={() => handleDelete(item.id)}
                         >
                           Delete
                         </button>
                       </td>
-                      </tr>
-                ))}
-               
-              </tbody>
-            </table>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <Offcanvas
+                show={showEditModal}
+                onHide={() => setShowEditModal(false)}
+                placement="end"
+              >
+                <Offcanvas.Header closeButton>
+                  <Offcanvas.Title>Edit Order</Offcanvas.Title>
+                </Offcanvas.Header>
+                <Offcanvas.Body>
+                  <Form onSubmit={handleSubmit}>
+                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                      <Form.Label>Order ID</Form.Label>
+                      <Form.Control
+                        type="text"
+                        placeholder="Enter Order Id"
+                        name="orderId"
+                        onChange={handleChange}
+                        value={formData.orderId}
+                      />
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                      <Form.Label>Product</Form.Label>
+                      <Form.Control
+                        type="text"
+                        placeholder="Product Name"
+                        name="productName"
+                        onChange={handleChange}
+                        value={formData.productName}
+                      />
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                      <Form.Label>Order Value</Form.Label>
+                      <Form.Control
+                        type="text"
+                        placeholder="Product Price"
+                        name="productPrice"
+                        onChange={handleChange}
+                        value={formData.productPrice}
+                      />
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                      <Form.Label>Quantity</Form.Label>
+                      <Form.Control
+                        type="number"
+                        placeholder="Quantity"
+                        name="quantity"
+                        onChange={handleChange}
+                        value={formData.quantity}
+                      />
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                      <Form.Label>Total</Form.Label>
+                      <Form.Control
+                        type="text"
+                        placeholder="Total"
+                        name="total"
+                        onChange={handleChange}
+                        value={formData.total}
+                      />
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                      <Form.Label>Placed On</Form.Label>
+                      <Form.Control
+                        type="date"
+                        placeholder=""
+                        name="orderPlacedDate"
+                        onChange={handleChange}
+                        value={formData.orderPlacedDate}
+                      />
+                    </Form.Group>
+
+                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                      <Form.Label>Expected Delivery</Form.Label>
+                      <Form.Control
+                        type="date"
+                        placeholder=""
+                        name="expectedDeliveryDate"
+                        onChange={handleChange}
+                        value={formData.expectedDeliveryDate}
+                      />
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="formProduct">
+                      <Form.Label>Select status</Form.Label>
+                      <Form.Select
+                        name="productStatus"
+                        //  value={formData.productStatus}
+                        onChange={handleChange}
+                        value={formData.productStatus}
+                      >
+                        <option value="" disabled selected>
+                          Select status
+                        </option>
+
+                        <option value="Confirmed">Confirmed</option>
+                        <option value="In progress">In progress</option>
+                        <option value="Delivered">Delivered</option>
+                        <option value="Cancelled">Cancelled</option>
+                        <option value="Returned">Returned</option>
+
+                        {/* Add more options as needed */}
+                      </Form.Select>
+                    </Form.Group>
+
+                    <Button variant="primary" type="submit">
+                      Edit order
+                    </Button>
+                  </Form>
+                </Offcanvas.Body>
+              </Offcanvas>
+            </div>
           </div>
-        
         </div>
       </div>
-    </div>
-  </>
-  )
-}
+    </>
+  );
+};
 
-export default Orders
+export default Orders;

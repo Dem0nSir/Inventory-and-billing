@@ -7,39 +7,46 @@ import {
   collection,
   deleteDoc,
   doc,
-  getDocs,
+  getDoc,
   onSnapshot,
+  serverTimestamp,
   updateDoc,
 } from "firebase/firestore";
 import { db } from "../services/firebase";
 import { Button, Offcanvas } from "react-bootstrap";
-import { Form } from "react-router-dom";
+import { Form } from "react-bootstrap";
 
 const Products = (props) => {
   const [products, setProducts] = useState([]); // State to hold product data
-  const [isDropdownVisible, setDropdownVisible] = useState(false);
-  const [show, setShow] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [formData, setFormData] = useState([]);
   const [editProductId, setEditProductId] = useState();
-  // Fetch product data from API or database on component mount
-  // useEffect(() => {
-  //   getProduct();
-  // }, []);
-  // console.log("p", products);
-  // const getProduct = async () => {
-  //   try {
-  //     const productCollectionRef = collection(db, "products");
-  //     const querySnapshot = await getDocs(productCollectionRef);
-  //     const productsData = querySnapshot.docs.map((doc) => ({
-  //       id: doc.id,
-  //       ...doc.data(),
-  //     }));
-  //     setProducts(productsData);
-  //   } catch (error) {
-  //     console.error("Error fetching products:", error);
-  //   }
-  // };
+  const [filteredItems, setFilteredItems] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  console.log(searchTerm);
+
+  useEffect(() => {
+    setFilteredItems(products);
+  }, [products]);
+
+  useEffect(() => {
+    editHandler();
+  }, [showEditModal]);
+
+  const editHandler = async () => {
+    try {
+      const productDoc = doc(db, "products", editProductId);
+      const docSnap = await getDoc(productDoc);
+      if (docSnap.exists()) {
+        setFormData(docSnap.data());
+      } else {
+        console.error("Product not found!");
+      }
+    } catch (error) {
+      console.error("Error fetching product:", error);
+    }
+  };
+
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, "products"), (snapshot) => {
       const productsData = snapshot.docs.map((doc) => ({
@@ -51,17 +58,12 @@ const Products = (props) => {
     // Unsubscribe from the snapshot listener when component unmounts
     return () => unsubscribe();
   }, []);
-  // Render product table
-  const toggleDropdown = () => {
-    // console.log('clicked')
-    setDropdownVisible(!isDropdownVisible);
-  };
+
   const handleDelete = (id) => {
     const Doc = doc(db, "products", id);
     return deleteDoc(Doc);
   };
   const handleEdit = (id) => {
-    // setEditProduct(product);
     setEditProductId(id);
     setShowEditModal(true);
   };
@@ -72,26 +74,44 @@ const Products = (props) => {
       [name]: value,
     }));
   };
-  const handleClose = () => setShow(false);
+  const handleClose = () => setShowEditModal(false);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const assetCollectionRef = collection(db, "products", editProductId);
-      await updateDoc(assetCollectionRef, formData);
+      const saleDoc = doc(db, "products", editProductId);
+
+      // Update 'updated_at' timestamp
+      const policyWithTimestamp = {
+        ...formData,
+        updated_at: serverTimestamp(),
+      };
+
+      await updateDoc(saleDoc, policyWithTimestamp);
 
       console.log("Form Data Saved to Firestore:", formData);
       handleClose();
-      // setFormData({
-      //   productName: "",
-      //   buyingPrice: "",
-      //   quantity: "",
-      //   sellingPrice: "",
-      //   productStatus: "In-Stock",
-      // });
     } catch (error) {
       console.error("Error saving form data:", error);
     }
   };
+
+  const handleInputChange = (e) => {
+    const searchTerm = e.target.value.toLowerCase();
+    setSearchTerm(searchTerm);
+
+    // Assuming policy is your original data array
+    if (searchTerm === "") {
+      // If the search term is empty, reset to the original policies
+      setFilteredItems(products);
+    } else {
+      const filteredItems = products.filter((user) =>
+        user.productName.toLowerCase().includes(searchTerm)
+      );
+      setFilteredItems(filteredItems);
+    }
+  };
+  console.log("ff", filteredItems);
 
   return (
     <>
@@ -120,12 +140,6 @@ const Products = (props) => {
                   </div>
                 </div>
                 <Addproduct />
-                {/* <button
-                  id="kt_drawer_example_basic_button"
-                  class="btn btn-primary"
-                >
-                  Toggle basic drawer
-                </button> */}
               </div>
             </div>
           </div>
@@ -139,8 +153,8 @@ const Products = (props) => {
                   data-kt-user-table-filter="search"
                   className="form-control form-control-solid w-250px ps-14"
                   placeholder="Search Products"
-                  // value={searchTerm}
-                  // onChange={(e) => setSearchTerm(e.target.value)}
+                  value={searchTerm}
+                  onChange={handleInputChange}
                 />
               </div>
             </div>
@@ -160,7 +174,7 @@ const Products = (props) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {products.map((product) => (
+                  {filteredItems.map((product) => (
                     <tr key={product.id}>
                       <td>{product.productName}</td>
                       <td>{product.buyingPrice}</td>
@@ -186,12 +200,12 @@ const Products = (props) => {
                         )}
                       </td>
                       <td>
-                        {/* <button
+                        <button
                           className="btn btn-sm btn-primary me-2"
                           onClick={() => handleEdit(product.id)}
                         >
                           Edit
-                        </button> */}
+                        </button>
                         <button
                           className="btn btn-sm btn-danger"
                           onClick={() => handleDelete(product.id)}
@@ -209,7 +223,7 @@ const Products = (props) => {
                 placement="end"
               >
                 <Offcanvas.Header closeButton>
-                  <Offcanvas.Title>Add Product</Offcanvas.Title>
+                  <Offcanvas.Title>Edit Product</Offcanvas.Title>
                 </Offcanvas.Header>
                 <Offcanvas.Body>
                   <Form onSubmit={handleSubmit}>
@@ -220,6 +234,7 @@ const Products = (props) => {
                         placeholder="Product Name"
                         name="productName"
                         onChange={handleChange}
+                        value={formData.productName}
                       />
                       {/* <Form.Text className="text-muted">
                 We'll never share your email with anyone else.
@@ -232,6 +247,7 @@ const Products = (props) => {
                         placeholder="Buying Price"
                         name="buyingPrice"
                         onChange={handleChange}
+                        value={formData.buyingPrice}
                       />
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -241,6 +257,7 @@ const Products = (props) => {
                         placeholder="Quantity"
                         name="quantity"
                         onChange={handleChange}
+                        value={formData.quantity}
                       />
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -250,6 +267,7 @@ const Products = (props) => {
                         placeholder="Selling Price"
                         name="sellingPrice"
                         onChange={handleChange}
+                        value={formData.sellingPrice}
                       />
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="formProduct">
@@ -258,6 +276,7 @@ const Products = (props) => {
                         name="productStatus"
                         //  value={formData.productStatus}
                         onChange={handleChange}
+                        value={formData.productStatus}
                       >
                         <option value="In-Stock">In-Stock</option>
                         <option value="Out-of-Stock">Out-of-Stock</option>
@@ -267,7 +286,7 @@ const Products = (props) => {
                     </Form.Group>
 
                     <Button variant="primary" type="submit">
-                      Add
+                      Edit Product
                     </Button>
                   </Form>
                 </Offcanvas.Body>

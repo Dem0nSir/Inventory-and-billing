@@ -6,6 +6,7 @@ const DashCard = () => {
   const [sales, setSales] = useState([]);
   const [totalSales, setTotalSales] = useState(0);
   const [totalProducts, setTotalProducts] = useState(0);
+  const [orderNumber, setOrderNumber] = useState(0);
 
   console.log(sales);
   useEffect(() => {
@@ -15,6 +16,19 @@ const DashCard = () => {
         ...doc.data(),
       }));
       setSales(suppliersData);
+      
+    });
+    // Unsubscribe from the snapshot listener when component unmounts
+    return () => unsubscribe();
+  }, []);
+  useEffect(() => {
+    const unsubscribe = onSnapshot(collection(db, "orders"), (snapshot) => {
+      const suppliersData = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setOrderNumber(suppliersData.length);
+   
     });
     // Unsubscribe from the snapshot listener when component unmounts
     return () => unsubscribe();
@@ -80,8 +94,8 @@ const DashCard = () => {
           <div className="col-md-3">
             <div className="p-3 bg-white border shadow-sm d-flex justify-content-around align-items-center rounded">
               <div>
-                <h3 className="fs-2">25</h3>
-                <p className="fs-5">Delivery</p>
+                <h3 className="fs-2">{orderNumber}</h3>
+                <p className="fs-5">No. of orders</p>
               </div>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
