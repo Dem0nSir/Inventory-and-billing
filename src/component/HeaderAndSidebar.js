@@ -226,7 +226,7 @@ function HeaderAndSidebar(props) {
 
           <div className="mt-8 text-center">
             <img
-              src="/images/luffy.jpg"
+              src="/images/blank.png"
               alt=""
               className="w-10 h-10 m-auto rounded-full object-cover lg:w-28 lg:h-28"
             />
