@@ -45,84 +45,81 @@ const Login = () => {
 
   return (
     <>
-  
       <main>
-  <section className="bg-light">
-    <div className="container-fluid">
-      <div className="row g-0">
-        <div className="col-12 col-xxl-12">
-          <div className="row g-0 min-vh-100">
-            <div className="col-12 col-md-6">
-              <img
-                className="img-fluid rounded-start w-100 h-100 object-fit-cover"
-                loading="lazy"
-                src="./background/4334841.jpg"
-                alt=""
-              />
-            </div>
-            <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
-              <div className="col-12 col-lg-11 col-xl-10">
-                <div className="card-body p-3 p-md-4 p-xl-5">
-                <div className="row">
-                            <div className="col-12">
-                              <div className="mb-8">
-                                <div className="text-center mb-6">
-                                  {/* <img
+        <section className="bg-light">
+          <div className="container-fluid">
+            <div className="row g-0">
+              <div className="col-12 col-xxl-12">
+                <div className="row g-0 min-vh-100">
+                  <div className="col-12 col-md-6">
+                    <img
+                      className="img-fluid rounded-start w-100 h-100 object-fit-cover"
+                      loading="lazy"
+                      src="./background/4334841.jpg"
+                      alt=""
+                    />
+                  </div>
+                  <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
+                    <div className="col-12 col-lg-11 col-xl-10">
+                      <div className="card-body p-3 p-md-4 p-xl-5">
+                        <div className="row">
+                          <div className="col-12">
+                            <div className="mb-8">
+                              <div className="text-center mb-6">
+                                {/* <img
                                       src="./assets/img/bsb-logo.svg"
                                       alt="BootstrapBrain Logo"
                                       width="175"
                                       height="57"
                                     /> */}
-                                  <h1 className="fw-bold text-muted">
-                                    Inventory Management System
-                                  </h1>
-                                </div>
-                                <h2 className="h4 text-center">Login</h2>
+                                <h1 className="fw-bold text-muted">
+                                  Inventory Management System
+                                </h1>
                               </div>
+                              <h2 className="h4 text-center">Login</h2>
                             </div>
                           </div>
-                          <form>
-                            {error && (
-                              <div className="alert alert-danger">{error}</div>
-                            )}
-                            <div className="row gy-3 overflow-hidden">
-                              <div className="col-12">
-                                <div className="form-floating mb-3">
-                                  <input
-                                    type="email"
-                                    className="form-control"
-                                    name="email"
-                                    id="email"
-                                    placeholder="name@example.com"
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    required
-                                  />
-                                  <label for="email" className="form-label">
-                                    Email
-                                  </label>
-                                </div>
+                        </div>
+                        <form>
+                          {error && (
+                            <div className="alert alert-danger">{error}</div>
+                          )}
+                          <div className="row gy-3 overflow-hidden">
+                            <div className="col-12">
+                              <div className="form-floating mb-3">
+                                <input
+                                  type="email"
+                                  className="form-control"
+                                  name="email"
+                                  id="email"
+                                  placeholder="name@example.com"
+                                  onChange={(e) => setEmail(e.target.value)}
+                                  required
+                                />
+                                <label for="email" className="form-label">
+                                  Email
+                                </label>
                               </div>
+                            </div>
 
-                              <div className="col-12">
-                                <div className="form-floating mb-3">
-                                  <input
-                                    type="password"
-                                    className="form-control"
-                                    name="password"
-                                    id="password"
-                                    // value=""
-                                    placeholder="Password"
-                                    onChange={(e) =>
-                                      setPassword(e.target.value)
-                                    }
-                                    required
-                                  />
-                                  <label for="password" className="form-label">
-                                    Password
-                                  </label>
-                                </div>
+                            <div className="col-12">
+                              <div className="form-floating mb-3">
+                                <input
+                                  type="password"
+                                  className="form-control"
+                                  name="password"
+                                  id="password"
+                                  // value=""
+                                  placeholder="Password"
+                                  onChange={(e) => setPassword(e.target.value)}
+                                  required
+                                />
+                                <label for="password" className="form-label">
+                                  Password
+                                </label>
                               </div>
-                              {/* <div className="col-12">
+                            </div>
+                            {/* <div className="col-12">
                                 <div className="form-check">
                                   <input
                                     className="form-check-input"
@@ -146,28 +143,28 @@ const Login = () => {
                                   </label>
                                 </div>
                               </div> */}
-                              <div className="col-12">
-                                <div className="d-grid">
-                                  <button
-                                    className="btn btn-dark btn-lg"
-                                    type="submit"
-                                    onClick={onLogin}
-                                  >
-                                    Sign up
-                                  </button>
-                                </div>
+                            <div className="col-12">
+                              <div className="d-grid">
+                                <button
+                                  className="btn btn-dark btn-lg"
+                                  type="submit"
+                                  onClick={onLogin}
+                                >
+                                  Sign up
+                                </button>
                               </div>
                             </div>
-                          </form>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-  </section>
-</main>
+        </section>
+      </main>
     </>
   );
 };
