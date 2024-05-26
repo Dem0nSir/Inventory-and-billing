@@ -102,7 +102,7 @@ const Sales = () => {
 
           <div className="card m-4 h-100">
             <div className="mx-3 mt-3 fs-4 d-flex align-items-center">
-              <span>Sales record</span>
+              <span className="">Sales record</span>
               <div className="ms-auto ">
                 <input
                   type="text"

@@ -45,25 +45,25 @@ const Login = () => {
 
   return (
     <>
-      <main style={{ height: "100vh" }}>
-        <section className="bg-light p-3 p-md-4 p-xl-5">
-          <div className="container-fluid p-0 " style={{ height: "80vh" }}>
-            <div className="row">
-              <div className="col-12 col-xxl-12">
-                <div className="card border-light-subtle shadow-sm">
-                  <div className="row g-0" style={{ height: "90vh" }}>
-                    <div className="col-12 col-md-6">
-                      <img
-                        className="img-fluid rounded-start w-100 h-100 object-fit-cover"
-                        loading="lazy"
-                        src="./background/background.png"
-                        alt="Welcome back you've been missed!"
-                      />
-                    </div>
-                    <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
-                      <div className="col-12 col-lg-11 col-xl-10 ">
-                        <div className="card-body p-3 p-md-4 p-xl-5">
-                          <div className="row">
+  
+      <main>
+  <section className="bg-light">
+    <div className="container-fluid">
+      <div className="row g-0">
+        <div className="col-12 col-xxl-12">
+          <div className="row g-0 min-vh-100">
+            <div className="col-12 col-md-6">
+              <img
+                className="img-fluid rounded-start w-100 h-100 object-fit-cover"
+                loading="lazy"
+                src="./background/4334841.jpg"
+                alt=""
+              />
+            </div>
+            <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
+              <div className="col-12 col-lg-11 col-xl-10">
+                <div className="card-body p-3 p-md-4 p-xl-5">
+                <div className="row">
                             <div className="col-12">
                               <div className="mb-8">
                                 <div className="text-center mb-6">
@@ -159,24 +159,15 @@ const Login = () => {
                               </div>
                             </div>
                           </form>
-                          <div className="row">
-                            <div className="col-12">
-                              {/* <p className="mb-0 mt-5 text-secondary text-center">
-                                NO account yet?{" "}
-                                <NavLink to="/signup">Sign up</NavLink>
-                              </p> */}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </section>
-      </main>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
     </>
   );
 };

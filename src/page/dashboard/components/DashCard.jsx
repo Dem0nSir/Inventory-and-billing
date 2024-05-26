@@ -16,7 +16,7 @@ const DashCard = () => {
         ...doc.data(),
       }));
       setSales(suppliersData);
-      
+
     });
     // Unsubscribe from the snapshot listener when component unmounts
     return () => unsubscribe();
@@ -28,7 +28,7 @@ const DashCard = () => {
         ...doc.data(),
       }));
       setOrderNumber(suppliersData.length);
-   
+
     });
     // Unsubscribe from the snapshot listener when component unmounts
     return () => unsubscribe();
@@ -137,3 +137,4 @@ const DashCard = () => {
 };
 
 export default DashCard;
+
