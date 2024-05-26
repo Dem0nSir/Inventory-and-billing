@@ -50,32 +50,26 @@ const CreateAccount = () => {
               <div className="col-12 col-xxl-11">
                 <div className="card border-light-subtle shadow-sm">
                   <div className="row g-0">
-                    <div className="col-12 col-md-6">
-                      <img
-                        className="img-fluid rounded-start w-100 h-100 object-fit-cover"
-                        loading="lazy"
-                        src="./background/background.png"
-                        alt="Welcome back you've been missed!"
-                      />
-                    </div>
-                    <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
+                   
+                    <div className="col-12 d-flex align-items-center justify-content-center">
                       <div className="col-12 col-lg-11 col-xl-10">
                         <div className="card-body p-3 p-md-4 p-xl-5">
                           <div className="row">
                             <div className="col-12">
                               <div className="mb-5">
                                 <div className="text-center mb-4">
-                                  <a href="#!">
+                                 
                                     {/* <img
                                    src="./assets/img/bsb-logo.svg"
                                    alt="BootstrapBrain Logo"
                                    width="175"
                                    height="57"
                                  /> */}
-                                    <p className="fw-bold ">
+                                    <h2 className="fw-bold  ">
                                       Inventory Management Syatem
-                                    </p>
-                                  </a>
+                                    </h2>
+                                    <p>Create new account for employee from here!</p>
+                              
                                 </div>
                                 <h2 className="h4 text-center">Sign up</h2>
                               </div>
