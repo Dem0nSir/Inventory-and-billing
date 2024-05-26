@@ -87,7 +87,6 @@ const Stores = () => {
       console.error("Error saving form data:", error);
     }
   };
-  console.log(stores);
   return (
     <>
       <div className="bg-white h-screen">
@@ -118,7 +117,7 @@ const Stores = () => {
 
           <div className="card m-4 h-100">
             <div className="mx-3 mt-3 fs-4 d-flex align-items-center">
-              <span>Manage Store</span>
+              <span className="fs-2 fw-bold my-4">Manage Store</span>
               <div className="ms-auto mx-2">
                 {/* <input
                   type="text"

@@ -120,7 +120,7 @@ const Products = (props) => {
           <div class="sticky z-10 top-0 h-16 border-b bg-white lg:py-2.5">
             <div class="px-6 flex items-center justify-between space-x-4 2xl:container">
               <h5 class="text-2xl text-gray-600 font-medium lg:block">
-                Inventory Management System
+                {/* Inventory Management System */}
               </h5>
             </div>
           </div>
@@ -133,8 +133,8 @@ const Products = (props) => {
                     {/* <img src={toAbsoluteUrl(`/media/logos/${icon}`)} alt='' /> */}
                   </div>
                   <div className="d-flex flex-column">
-                    <span className="card-label fw-bold fs-3">
-                      Overall Inventory
+                    <span className="card-label fw-bold fs-2">
+                      Products
                     </span>
                     {/* <span className='text-muted fw-semibold fs-7'>{desc}</span> */}
                   </div>

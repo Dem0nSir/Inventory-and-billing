@@ -92,7 +92,7 @@ const Sales = () => {
                     {/* <img src={toAbsoluteUrl(`/media/logos/${icon}`)} alt='' /> */}
                   </div>
                   <div className="d-flex flex-column">
-                    <span className="card-label fw-bold fs-3">Sales</span>
+                    <span className="card-label fw-bold fs-2">Sales</span>
                   </div>
                 </div>
                 <AddSales />
@@ -102,7 +102,7 @@ const Sales = () => {
 
           <div className="card m-4 h-100">
             <div className="mx-3 mt-3 fs-4 d-flex align-items-center">
-              <span>Sales</span>
+              <span>Sales record</span>
               <div className="ms-auto ">
                 <input
                   type="text"

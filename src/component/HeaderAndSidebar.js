@@ -558,7 +558,7 @@ function HeaderAndSidebar(props) {
             >
               {/* Logout icon */}
             </svg>
-            <button onClick={handleSignOut} className="btn">
+            <button onClick={handleSignOut} className="btn fw-bold fs-5 text-danger">
               Logout
             </button>
           </button>

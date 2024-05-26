@@ -148,7 +148,7 @@ const Suppliers = () => {
                     {/* <img src={toAbsoluteUrl(`/media/logos/${icon}`)} alt='' /> */}
                   </div>
                   <div className="d-flex flex-column">
-                    <span className="card-label fw-bold fs-3">Supplier</span>
+                    <span className="card-label fw-bold fs-2">Supplier</span>
                   </div>
                 </div>
                 {/* <Addproduct /> */}
@@ -159,7 +159,7 @@ const Suppliers = () => {
 
           <div className="card m-4 h-100">
             <div className="mx-3 mt-3 fs-4 d-flex align-items-center">
-              <span>Suppliers</span>
+              <span>Suppliers records</span>
               <div className="ms-auto ">
                 <input
                   type="text"
