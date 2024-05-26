@@ -54,7 +54,7 @@ const Dashboard = (props) => {
           <DashCard />
         </div>
         <div className="mx-4 ">
-          <div className="fs-4 fw-bold m-1">Todays Sales</div>
+          <div className="fs-3 fw-bold m-1 mb-2">Todays Sales</div>
           <div class="table-responsive ">
             <table class="table table-rounded table-striped border gy-7 gs-7">
               <thead>

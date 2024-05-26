@@ -53,7 +53,7 @@ const DashCard = () => {
   }, [sales]);
   return (
     <>
-      <div className="m-4 mt-2 fs-1 text-center">
+      <div className="m-4 mt-2 fs-1 text-center fw-bold">
         Inventory Management System
       </div>
       <div className="container-fluid mb-5">
@@ -62,7 +62,7 @@ const DashCard = () => {
             <div className="p-3 bg-white border shadow-sm d-flex justify-content-around align-items-center rounded">
               <div>
                 <h3 className="fs-2">{totalProducts}</h3>
-                <p className="fs-5">Products</p>
+                <p className="fs-4 fw-semibold">Products</p>
               </div>
               <img
                 src="/icons/cart4.svg"
@@ -77,7 +77,7 @@ const DashCard = () => {
             <div className="p-3 bg-white border shadow-sm d-flex justify-content-around align-items-center rounded">
               <div>
                 <h3 className="fs-3"> Rs {totalSales}</h3>
-                <p className="fs-5">Sales</p>
+                <p className="fs-4 fw-semibold">Sales</p>
               </div>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -95,7 +95,7 @@ const DashCard = () => {
             <div className="p-3 bg-white border shadow-sm d-flex justify-content-around align-items-center rounded">
               <div>
                 <h3 className="fs-2">{orderNumber}</h3>
-                <p className="fs-5">No. of orders</p>
+                <p className="fs-4 fw-semibold">No. of orders</p>
               </div>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -113,7 +113,7 @@ const DashCard = () => {
             <div className="p-3 bg-white border shadow-sm d-flex justify-content-around align-items-center rounded">
               <div>
                 <h3 className="fs-2">20%</h3>
-                <p className="fs-5">Increase</p>
+                <p className="fs-4 fw-semibold">Increase</p>
               </div>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
