@@ -121,7 +121,7 @@ const AddSales = () => {
               <p className="alert alert-danger">{errorMessage}</p>
             )}
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-              <Form.Label>Order Id</Form.Label>
+              <Form.Label className="fw-semibold">Order Id</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Enter Order Id"
@@ -135,7 +135,7 @@ const AddSales = () => {
               <Form.Control type="date" name="salesDate"  onChange={handleChange}/>
             </Form.Group> */}
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-              <Form.Label>Customer Name</Form.Label>
+              <Form.Label className="fw-semibold">Customer Name</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Enter Customer Name"
@@ -144,7 +144,7 @@ const AddSales = () => {
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-              <Form.Label>Phone Number</Form.Label>
+              <Form.Label className="fw-semibold">Phone Number</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Enter Phone Number"
@@ -153,7 +153,7 @@ const AddSales = () => {
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-              <Form.Label>Items Name</Form.Label>
+              <Form.Label className="fw-semibold">Items Name</Form.Label>
               <Form.Control
                 as="select"
                 name="itemsName"
@@ -168,7 +168,7 @@ const AddSales = () => {
               </Form.Control>
             </Form.Group>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-              <Form.Label>Items cost</Form.Label>
+              <Form.Label className="fw-semibold">Items cost</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Enter Item Cost"
@@ -177,7 +177,7 @@ const AddSales = () => {
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-              <Form.Label>Items Sold</Form.Label>
+              <Form.Label className="fw-semibold">Items Sold</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Enter Item Sold"
@@ -186,7 +186,7 @@ const AddSales = () => {
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-              <Form.Label>Sales Channel</Form.Label>
+              <Form.Label className="fw-semibold">Sales Channel</Form.Label>
               <Form.Select
                 aria-label="Default select example"
                 name="salesChannel"
@@ -199,7 +199,7 @@ const AddSales = () => {
               </Form.Select>
             </Form.Group>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-              <Form.Label>Payment </Form.Label>
+              <Form.Label className="fw-semibold">Payment </Form.Label>
               <Form.Select
                 aria-label="Default select example"
                 name="payment"
@@ -211,7 +211,7 @@ const AddSales = () => {
               </Form.Select>
             </Form.Group>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-              <Form.Label>Payment method</Form.Label>
+              <Form.Label className="fw-semibold">Payment method</Form.Label>
               <Form.Select
                 aria-label="Default select example"
                 name="paymentMethod"
@@ -224,7 +224,7 @@ const AddSales = () => {
               </Form.Select>
             </Form.Group>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-              <Form.Label>Sales Total</Form.Label>
+              <Form.Label className="fw-semibold">Sales Total</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Enter Sales Total"

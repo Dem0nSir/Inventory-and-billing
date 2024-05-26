@@ -57,7 +57,7 @@ function Addsupplier() {
         <Offcanvas.Body>
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Supplier Name</Form.Label>
+              <Form.Label className="fw-semibold">Supplier Name</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Enter Supplier name"
@@ -66,7 +66,7 @@ function Addsupplier() {
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Product</Form.Label>
+              <Form.Label className="fw-semibold">Product</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Enter product"
@@ -75,7 +75,7 @@ function Addsupplier() {
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Contact number</Form.Label>
+              <Form.Label className="fw-semibold">Contact number</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Enter  Contact number"
@@ -84,7 +84,7 @@ function Addsupplier() {
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Address</Form.Label>
+              <Form.Label className="fw-semibold">Address</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Enter address"
@@ -93,7 +93,7 @@ function Addsupplier() {
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Email</Form.Label>
+              <Form.Label className="fw-semibold">Email</Form.Label>
               <Form.Control
                 type="email"
                 placeholder="Enter your email"
@@ -102,7 +102,7 @@ function Addsupplier() {
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formProduct">
-              <Form.Label>Type</Form.Label>
+              <Form.Label className="fw-semibold">Type</Form.Label>
               <Form.Select
                 name="productType"
                 //  value={formData.productStatus}

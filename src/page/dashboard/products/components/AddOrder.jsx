@@ -64,7 +64,7 @@ function AddOrder() {
         <Offcanvas.Body>
           <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Order ID</Form.Label>
+              <Form.Label className="fw-semibold">Order ID</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Enter Order Id"
@@ -73,7 +73,7 @@ function AddOrder() {
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Product</Form.Label>
+              <Form.Label className="fw-semibold">Product</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Product Name"
@@ -82,7 +82,7 @@ function AddOrder() {
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Order Value</Form.Label>
+              <Form.Label className="fw-semibold">Order Value</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Product Price"
@@ -91,7 +91,7 @@ function AddOrder() {
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Quantity</Form.Label>
+              <Form.Label className="fw-semibold">Quantity</Form.Label>
               <Form.Control
                 type="number"
                 placeholder="Quantity"
@@ -100,7 +100,7 @@ function AddOrder() {
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Total</Form.Label>
+              <Form.Label className="fw-semibold">Total</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Total"
@@ -109,7 +109,7 @@ function AddOrder() {
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Placed On</Form.Label>
+              <Form.Label className="fw-semibold">Placed On</Form.Label>
               <Form.Control
                 type="date"
                 placeholder=""
@@ -119,7 +119,7 @@ function AddOrder() {
             </Form.Group>
             
             <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Expected Delivery</Form.Label>
+              <Form.Label className="fw-semibold">Expected Delivery</Form.Label>
               <Form.Control
                 type="date"
                 placeholder=""
@@ -128,7 +128,7 @@ function AddOrder() {
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formProduct">
-              <Form.Label>Select status</Form.Label>
+              <Form.Label className="fw-semibold">Select status</Form.Label>
               <Form.Select
                 name="productStatus"
                 //  value={formData.productStatus}

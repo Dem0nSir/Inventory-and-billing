@@ -61,7 +61,7 @@ function AddProduct() {
         <Offcanvas.Body>
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Product</Form.Label>
+              <Form.Label className="fw-semibold">Product</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Product Name"
@@ -73,7 +73,7 @@ function AddProduct() {
               </Form.Text> */}
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Buying Price</Form.Label>
+              <Form.Label className="fw-semibold">Buying Price</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Buying Price"
@@ -82,7 +82,7 @@ function AddProduct() {
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Quantity</Form.Label>
+              <Form.Label className="fw-semibold">Quantity</Form.Label>
               <Form.Control
                 type="number"
                 placeholder="Quantity"
@@ -91,7 +91,7 @@ function AddProduct() {
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Selling Price</Form.Label>
+              <Form.Label className="fw-semibold">Selling Price</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Selling Price"
@@ -100,7 +100,7 @@ function AddProduct() {
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Supplier</Form.Label>
+              <Form.Label className="fw-semibold">Supplier</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Supplier"
@@ -113,7 +113,7 @@ function AddProduct() {
               <Form.Control type="text" placeholder="A"  name="supplier" onChange={handleChange}/>
             </Form.Group> */}
             <Form.Group className="mb-3" controlId="formProduct">
-              <Form.Label>Select Product</Form.Label>
+              <Form.Label className="fw-semibold">Select Product</Form.Label>
               <Form.Select
                 name="productStatus"
                 //  value={formData.productStatus}

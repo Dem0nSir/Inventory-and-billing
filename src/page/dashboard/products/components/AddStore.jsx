@@ -54,7 +54,7 @@ function AddStore() {
         <Offcanvas.Body>
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Store Name</Form.Label>
+              <Form.Label className="fw-semibold">Store Name</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Enter Store Name"
@@ -66,7 +66,7 @@ function AddStore() {
               </Form.Text> */}
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Location</Form.Label>
+              <Form.Label className="fw-semibold">Location</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Enter Location"
@@ -75,7 +75,7 @@ function AddStore() {
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Phone number</Form.Label>
+              <Form.Label className="fw-semibold">Phone number</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Enter Phone number"
@@ -84,7 +84,7 @@ function AddStore() {
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Branch no.</Form.Label>
+              <Form.Label className="fw-semibold">Branch no.</Form.Label>
               <Form.Control
                 type="number"
                 placeholder="Enter branch number"
