@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
+import ReactToPrint from "react-to-print";
 import {
   MDBCard,
   MDBCardBody,
@@ -14,37 +15,44 @@ import {
 } from "mdb-react-ui-kit";
 import { Button, Modal } from "react-bootstrap";
 import databaseServices from "../components/services/database.services";
+import { useReactToPrint } from "react-to-print";
 
-export default function Invoice( {id}) {
+export default function Invoice({ id }) {
   const [show, setShow] = useState(false);
   const [formData, setFormData] = useState({});
   const [message, setMessage] = useState({ error: false, msg: "" });
-
-
+  const componentRef = useRef();
   useEffect(() => {
     editHandler();
   }, []);
-
 
   const editHandler = async () => {
     try {
       const docSnap = await databaseServices.getPolicy(id);
       console.log(docSnap.data());
-        setFormData(docSnap.data());
+      setFormData(docSnap.data());
     } catch (error) {
       setMessage({ error: true, msg: error.message });
       //   setShowAlert(true)
     }
   };
-  console.log(formData)
+  console.log(formData);
   const handleShow = () => setShow(true);
   const closeModal = () => {
     setShow(false);
     window.location.reload();
   };
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
+
   return (
     <>
-      <Button variant="primary" onClick={handleShow} className="btn btn-sm btn-success">
+      <Button
+        variant="primary"
+        onClick={handleShow}
+        className="btn btn-sm btn-success"
+      >
         Bill
       </Button>
       <Modal show={show} onHide={closeModal} size="xl">
@@ -53,20 +61,22 @@ export default function Invoice( {id}) {
         </Modal.Header>
         <Modal.Body>
           <MDBContainer className="py-5 ">
-            <MDBCard className="p-4 ml-10">
+            <MDBCard className="p-4 ml-10" ref={componentRef}>
               <MDBCardBody>
                 <MDBContainer className="mb-2 mt-3">
                   <MDBRow className="d-flex align-items-baseline">
                     <MDBCol xl="9">
                       <p style={{ color: "#7e8d9f", fontSize: "20px" }}>
-                        Invoice &gt; &gt; <strong>ID: #{formData.orderId}</strong>
+                        Invoice &gt; &gt;{" "}
+                        <strong>ID: #{formData.orderId}</strong>
                       </p>
                     </MDBCol>
                     <MDBCol xl="3" className="float-end">
-                      <MDBBtn
+                      {/* <MDBBtn
                         color="light"
                         ripple="dark"
                         className="text-capitalize border-0"
+                        onClick={handlePrint}
                       >
                         <MDBIcon
                           fas
@@ -75,20 +85,34 @@ export default function Invoice( {id}) {
                           className="me-1"
                         />
                         Print
-                      </MDBBtn>
-                      <MDBBtn
-                        color="light"
-                        ripple="dark"
-                        className="text-capitalize border-0 ms-2"
-                      >
-                        <MDBIcon
-                          far
-                          icon="file-pdf"
-                          color="danger"
-                          className="me-1"
-                        />
-                        Export
-                      </MDBBtn>
+                      </MDBBtn> */}
+                       <MDBBtn
+        color="light"
+        ripple="dark"
+        className="text-capitalize border-0"
+        onClick={handlePrint}
+      >
+        <MDBIcon fas icon="print" color="primary" className="me-1" />
+        Print
+      </MDBBtn>
+                      <ReactToPrint
+                        trigger={() => (
+                          <MDBBtn
+                            color="light"
+                            ripple="dark"
+                            className="text-capitalize border-0 ms-2"
+                          >
+                            <MDBIcon
+                              far
+                              icon="file-pdf"
+                              color="danger"
+                              className="me-1"
+                            />
+                            Export 
+                          </MDBBtn>
+                        )}
+                        content={() => componentRef.current}
+                      />
                       <hr />
                     </MDBCol>
                   </MDBRow>
@@ -109,7 +133,10 @@ export default function Invoice( {id}) {
                   <MDBCol xl="8">
                     <MDBTypography listUnStyled>
                       <li className="text-muted">
-                        To: <span style={{ color: "#5d9fc5" }}>{formData.customerName}</span>
+                        To:{" "}
+                        <span style={{ color: "#5d9fc5" }}>
+                          {formData.customerName}
+                        </span>
                       </li>
                       {/* <li className="text-muted">Street, City</li> */}
                       <li className="text-muted">lalitpur,Nepal</li>
@@ -127,7 +154,8 @@ export default function Invoice( {id}) {
                           icon="circle"
                           style={{ color: "#84B0CA" }}
                         />
-                        <span className="fw-bold ms-1">ID:</span>#{formData.orderId}
+                        <span className="fw-bold ms-1">ID:</span>#
+                        {formData.orderId}
                       </li>
                       <li className="text-muted">
                         <MDBIcon
@@ -135,8 +163,8 @@ export default function Invoice( {id}) {
                           icon="circle"
                           style={{ color: "#84B0CA" }}
                         />
-                        <span className="fw-bold ms-1">Creation Date: </span>{formData.salesDate}
-                        
+                        <span className="fw-bold ms-1">Creation Date: </span>
+                        {formData.salesDate}
                       </li>
                       <li className="text-muted">
                         <MDBIcon
@@ -144,8 +172,8 @@ export default function Invoice( {id}) {
                           icon="circle"
                           style={{ color: "#84B0CA" }}
                         />
-                        <span className="fw-bold ms-1">Payment method: </span>{formData.paymentMethod}
-                        
+                        <span className="fw-bold ms-1">Payment method: </span>
+                        {formData.paymentMethod}
                       </li>
                       <li className="text-muted">
                         <MDBIcon
@@ -155,7 +183,7 @@ export default function Invoice( {id}) {
                         />
                         <span className="fw-bold ms-1">Status:</span>
                         <span className="badge bg-success text-black fw-bold ms-1">
-                         {formData.payment}
+                          {formData.payment}
                         </span>
                       </li>
                     </MDBTypography>
@@ -209,7 +237,8 @@ export default function Invoice( {id}) {
                   <MDBCol xl="3">
                     <MDBTypography listUnStyled>
                       <li className="text-muted ms-3">
-                        <span class="text-black me-4">SubTotal</span>Rs. {formData.salesTotal}
+                        <span class="text-black me-4">SubTotal</span>Rs.{" "}
+                        {formData.salesTotal}
                       </li>
                       <li className="text-muted ms-3 mt-2">
                         <span class="text-black me-4">Tax(0%)</span>-
@@ -217,7 +246,9 @@ export default function Invoice( {id}) {
                     </MDBTypography>
                     <p className="text-black float-start">
                       <span className="text-black me-3"> Total Amount</span>
-                      <span style={{ fontSize: "25px" }}>Rs. {formData.salesTotal}</span>
+                      <span style={{ fontSize: "25px" }}>
+                        Rs. {formData.salesTotal}
+                      </span>
                     </p>
                   </MDBCol>
                 </MDBRow>
