@@ -54,7 +54,7 @@ function AddProduct() {
         Add Product
       </Button>
 
-      <Offcanvas show={show} onHide={handleClose} placement="end">
+      <Offcanvas show={show} onHide={handleClose} placement="end" style={{width:"600px"}}>
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>Add Product</Offcanvas.Title>
         </Offcanvas.Header>

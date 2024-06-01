@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button } from "react-bootstrap";
+import { Button, Col, Offcanvas, Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -57,7 +57,6 @@ const AddSales = () => {
     }));
   };
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -111,11 +110,21 @@ const AddSales = () => {
         Add Sales
       </Button>
       {/* <Invoice  /> */}
-      <Modal show={show} onHide={handleClose}>
+      {/* <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Sales Record</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body> */}
+      <Offcanvas
+        show={show}
+        onHide={handleClose}
+        placement="end"
+        style={{ width: "600px" }}
+      >
+        <Offcanvas.Header closeButton>
+          <Offcanvas.Title>Add Sales</Offcanvas.Title>
+        </Offcanvas.Header>
+        <Offcanvas.Body>
           <Form onSubmit={handleSubmit}>
             {errorMessage && (
               <p className="alert alert-danger">{errorMessage}</p>
@@ -233,16 +242,23 @@ const AddSales = () => {
               />
             </Form.Group>
           </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleSubmit}>
-            Add Record
-          </Button>
-        </Modal.Footer>
-      </Modal>
+
+          <Row className="mt-3">
+            <Col className="d-flex justify-content-end">
+              <Button
+                variant="secondary"
+                onClick={handleClose}
+                className="me-2"
+              >
+                Close
+              </Button>
+              <Button variant="primary" onClick={handleSubmit}>
+                Add Record
+              </Button>
+            </Col>
+          </Row>
+        </Offcanvas.Body>
+      </Offcanvas>
     </>
   );
 };

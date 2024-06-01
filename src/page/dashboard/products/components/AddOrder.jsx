@@ -57,7 +57,7 @@ function AddOrder() {
         Add Order
       </Button>
 
-      <Offcanvas show={show} onHide={handleClose} placement="end">
+      <Offcanvas show={show} onHide={handleClose} placement="end" style={{width:"600px"}}>
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>Add Order</Offcanvas.Title>
         </Offcanvas.Header>

@@ -47,7 +47,7 @@ function AddStore() {
         Add Store
       </Button>
 
-      <Offcanvas show={show} onHide={handleClose} placement="end">
+      <Offcanvas show={show} onHide={handleClose} placement="end" style={{width:"600px"}}>
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>Add Store</Offcanvas.Title>
         </Offcanvas.Header>
