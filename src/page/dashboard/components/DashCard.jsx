@@ -58,8 +58,8 @@ const DashCard = () => {
       </div>
       <div className="container-fluid mb-5">
         <div className="row g-3 my-2">
-          <div className="col-md-3">
-            <div className="p-3 bg-white border shadow-sm d-flex justify-content-around align-items-center rounded">
+          <div className="col-md-3 " >
+            <div className="p-3 border shadow-sm d-flex justify-content-around align-items-center rounded" style={{background:"#54DAF6"}} >
               <div>
                 <h3 className="fs-2">{totalProducts}</h3>
                 <p className="fs-4 fw-semibold">Products</p>
@@ -74,7 +74,7 @@ const DashCard = () => {
           </div>
 
           <div className="col-md-3">
-            <div className="p-3 bg-white border shadow-sm d-flex justify-content-around align-items-center rounded">
+            <div className="p-3 border shadow-sm d-flex justify-content-around align-items-center rounded" style={{background:"lavender"}}>
               <div>
                 <h3 className="fs-3"> Rs {totalSales}</h3>
                 <p className="fs-4 fw-semibold">Sales</p>
@@ -92,7 +92,7 @@ const DashCard = () => {
             </div>
           </div>
           <div className="col-md-3">
-            <div className="p-3 bg-white border shadow-sm d-flex justify-content-around align-items-center rounded">
+            <div className="p-3 border shadow-sm d-flex justify-content-around align-items-center rounded" style={{background:"pink"}}>
               <div>
                 <h3 className="fs-2">{orderNumber}</h3>
                 <p className="fs-4 fw-semibold">No. of orders</p>
@@ -110,7 +110,7 @@ const DashCard = () => {
             </div>
           </div>
           <div className="col-md-3">
-            <div className="p-3 bg-white border shadow-sm d-flex justify-content-around align-items-center rounded">
+            <div className="p-3 border shadow-sm d-flex justify-content-around align-items-center rounded" style={{background:"teal"}}>
               <div>
                 <h3 className="fs-2">20%</h3>
                 <p className="fs-4 fw-semibold">Increase</p>
