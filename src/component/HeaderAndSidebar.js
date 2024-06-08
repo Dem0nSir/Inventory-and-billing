@@ -125,7 +125,7 @@ function HeaderAndSidebar(props) {
   const [matchedUser, setMatchedUser] = useState(null);
   const navigate = useNavigate();
   const [currentId, setCurrentId] = useState("");
-
+  const [dataFetched, setDataFetched] = useState(false);
   const [dashboardMenu22, setDashboardMenu2] = useState([]);
   useEffect(() => {
     const fetchUsers = async () => {
@@ -143,7 +143,9 @@ function HeaderAndSidebar(props) {
             .filter((data) => data.id === currentUserId)
             .find((user) => user["user"] === "1");
           setMatchedUser(matchedUser);
+          setDataFetched(true);
         } // Set the matched user object
+   
       } catch (error) {
         setError(error.message);
       }
@@ -151,10 +153,15 @@ function HeaderAndSidebar(props) {
 
     fetchUsers();
   }, []);
+
+
   const memoizedGetDashboardMenu22 = useMemo(
     () => getDashboardMenu22(matchedUser),
     [matchedUser]
   );
+  const removeCookie = (name) => {
+    document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+  };
 
   console.log(users);
   const handleSignOut = () => {
@@ -163,6 +170,8 @@ function HeaderAndSidebar(props) {
       .then(() => {
         // Sign-out successful.
         navigate("/login");
+        localStorage.removeItem("valid");
+        removeCookie("isLoggedIn");
         console.log("User signed out");
       })
       .catch((error) => {
@@ -171,112 +180,6 @@ function HeaderAndSidebar(props) {
       });
   };
 
-  // const dashboardMenu2 = [
-  //   {
-  //     id: 4,
-  //     name: "Report",
-  //     link: "/dashboard/report",
-  //     icon: (
-  //       <svg
-  //         xmlns="http://www.w3.org/2000/svg"
-  //         width="24"
-  //         height="24"
-  //         viewBox="0 0 24 24"
-  //         fill="none"
-  //         stroke="currentColor"
-  //         strokeWidth="2"
-  //         strokeLinecap="round"
-  //         strokeLinejoin="round"
-  //         className="icon icon-tabler icon-tabler-report"
-  //       >
-  //         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-  //         <path d="M8 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h5.697" />
-  //         <path d="M18 14v4h4" />
-  //         <path d="M18 11v-4a2 2 0 0 0 -2 -2h-2" />
-  //         <path d="M8 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" />
-  //         <path d="M18 18m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
-  //         <path d="M8 11h4" />
-  //         <path d="M8 15h3" />
-  //       </svg>
-  //     ),
-  //   },
-  //   {
-  //     id: 5,
-  //     name: "Supplier",
-  //     link: "/dashboard/supplier",
-  //     icon: (
-  //       <svg
-  //         xmlns="http://www.w3.org/2000/svg"
-  //         width="24"
-  //         height="24"
-  //         viewBox="0 0 24 24"
-  //         fill="none"
-  //         stroke="currentColor"
-  //         strokeWidth="2"
-  //         strokeLinecap="round"
-  //         strokeLinejoin="round"
-  //         className="icon icon-tabler icon-tabler-users"
-  //       >
-  //         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-  //         <path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
-  //         <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
-  //         <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-  //         <path d="M21 21v-2a4 4 0 0 0 -3 -3.85" />
-  //       </svg>
-  //     ),
-  //   },
-  //   {
-  //     id: 7,
-  //     name: "Manage Store",
-  //     link: "/dashboard/stores",
-  //     icon: (
-  //       <svg
-  //         xmlns="http://www.w3.org/2000/svg"
-  //         width="24"
-  //         height="24"
-  //         viewBox="0 0 24 24"
-  //         fill="none"
-  //         stroke="currentColor"
-  //         stroke-width="2"
-  //         stroke-linecap="round"
-  //         stroke-linejoin="round"
-  //         class="icon icon-tabler icons-tabler-outline icon-tabler-building-store"
-  //       >
-  //         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-  //         <path d="M3 21l18 0" />
-  //         <path d="M3 7v1a3 3 0 0 0 6 0v-1m0 1a3 3 0 0 0 6 0v-1m0 1a3 3 0 0 0 6 0v-1h-18l2 -4h14l2 4" />
-  //         <path d="M5 21l0 -10.15" />
-  //         <path d="M19 21l0 -10.15" />
-  //         <path d="M9 21v-4a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v4" />
-  //       </svg>
-  //     ),
-  //   },
-  //   {
-  //     id: 8,
-  //     name: "Create Account",
-  //     link: "/dashboard/createAccount",
-  //     icon: (
-  //       <svg
-  //         xmlns="http://www.w3.org/2000/svg"
-  //         width="24"
-  //         height="24"
-  //         viewBox="0 0 24 24"
-  //         fill="none"
-  //         stroke="currentColor"
-  //         stroke-width="2"
-  //         stroke-linecap="round"
-  //         stroke-linejoin="round"
-  //         class="icon icon-tabler icons-tabler-outline icon-tabler-user-plus"
-  //       >
-  //         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-  //         <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
-  //         <path d="M16 19h6" />
-  //         <path d="M19 16v6" />
-  //         <path d="M6 21v-2a4 4 0 0 1 4 -4h4" />
-  //       </svg>
-  //     ),
-  //   },
-  // ];
 
   const dashboardMenu = [
     {
@@ -380,6 +283,7 @@ function HeaderAndSidebar(props) {
   return (
     <div>
       <aside className="ml-[-100%] fixed z-10 top-0 pb-3 px-6 w-full flex flex-col justify-between h-screen border-r bg-white transition duration-300 md:w-4/12 lg:ml-0 lg:w-[25%] xl:w-[20%] 2xl:w-[15%]">
+      {dataFetched && 
         <div>
           <div className="-mx-6 px-6 py-">
             <Link to="/dashboard" title="home" className="text-decoration-none">
@@ -453,7 +357,7 @@ function HeaderAndSidebar(props) {
               ))}
           </ul>
         </div>
-
+}
         <div className="px-6 -mx-6 pt-4 flex justify-between items-center border-t">
           <button className="w-full px-4 py-3 mx-4 flex items-center space-x-4 rounded-md text-gray-600 hover:bg-gradient-to-r from-sky-500 to-cyan-300 hover:text-white">
             <svg
@@ -488,3 +392,8 @@ function HeaderAndSidebar(props) {
 }
 
 export default HeaderAndSidebar;
+
+
+
+
+

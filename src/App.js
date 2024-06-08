@@ -18,6 +18,7 @@ import Suppliers from "./page/dashboard/Suppliers";
 import Invoice from "./page/dashboard/products/print/Invoice";
 import CreateAccount from "./page/dashboard/products/components/CreateAccount";
 import EditSales from "./page/dashboard/products/components/EditSales";
+import PrivateRoute from "./page/PrivateRoute";
 
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-beta1/js/bootstrap.bundle.min.js"></script>;
 const ProtectedRoute = ({ children, ...rest }) => {
@@ -36,6 +37,7 @@ const ProtectedRoute = ({ children, ...rest }) => {
 };
 
 function App() {
+  const isLoggedInCookie = document.cookie.includes("isLoggedIn");
   return (
     <div>
       <Routes>
@@ -44,8 +46,9 @@ function App() {
         <Route path="/contact" element={<Contact />} /> */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+    
 
-        <Route path="/dashboard" element={<HeaderAndSidebar />}>
+        <Route path="/dashboard" element={  <PrivateRoute><HeaderAndSidebar /></PrivateRoute>}>
           <Route index element={<Dashboard />} />
           <Route path="sales" element={<Sales />} />
           <Route path="products" element={<Products />} />
@@ -56,6 +59,8 @@ function App() {
           <Route path="createAccount" element={<CreateAccount />} />
      
         </Route>
+       
+
         <Route path="/editSales" element={<EditSales />} />
         <Route
           path="*"

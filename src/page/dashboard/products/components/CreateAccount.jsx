@@ -28,6 +28,7 @@ const CreateAccount = () => {
           password: password,
           firstName: firstName,
           lastName: lastName,
+          user:"0"
           // Add any additional user data here
         });
         navigate("/login");

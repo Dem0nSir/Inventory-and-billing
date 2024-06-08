@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../services/firebase";
 import { NavLink, useNavigate } from "react-router-dom";
@@ -9,6 +9,13 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const isLoggedIn = getCookie("isLoggedIn");
+    if (isLoggedIn === "true") {
+      navigate("/dashboard");
+    }
+  }, []);
 
   const onLogin = (e) => {
     e.preventDefault();
@@ -27,6 +34,8 @@ const Login = () => {
         const user = userCredential.user;
         console.log("Signed in as", user);
         console.log("Attempting to navigate to dashboard");
+        localStorage.setItem("valid", true);
+        setCookie("isLoggedIn", true, 1);
         navigate("/dashboard");
       })
       .catch((error) => {
@@ -41,6 +50,33 @@ const Login = () => {
         // setError(errorMessage);
         console.log(errorCode, errorMessage);
       });
+  };
+
+  const setCookie = (name, value, days) => {
+    const date = new Date();
+    date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+    const expires = "expires=" + date.toUTCString();
+    document.cookie = name + "=" + value + ";" + expires + ";path=/";
+  };
+
+  const getCookie = (name) => {
+    const cookieName = name + "=";
+    const decodedCookie = decodeURIComponent(document.cookie);
+    const cookieArray = decodedCookie.split(";");
+    for (let i = 0; i < cookieArray.length; i++) {
+      let cookie = cookieArray[i];
+      while (cookie.charAt(0) === " ") {
+        cookie = cookie.substring(1);
+      }
+      if (cookie.indexOf(cookieName) === 0) {
+        return cookie.substring(cookieName.length, cookie.length);
+      }
+    }
+    return "";
+  };
+
+  const removeCookie = (name) => {
+    document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
   };
 
   return (
