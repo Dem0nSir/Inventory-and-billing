@@ -7,7 +7,7 @@ import { doc, setDoc } from "firebase/firestore";
 
 const Signup = () => {
   const navigate = useNavigate();
-
+const[error,setError] = useState("")
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -36,6 +36,7 @@ const Signup = () => {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
+        setError(errorMessage)
         console.log(errorCode, errorMessage);
         // ..
       });
@@ -108,6 +109,7 @@ const Signup = () => {
                               </p>
                             </div>
                           </div> */}
+                         
                           <form action="#!">
                             <div className="row gy-3 overflow-hidden">
                               <div className="col-12">

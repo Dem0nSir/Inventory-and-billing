@@ -8,7 +8,7 @@ import { auth, db } from "../../../services/firebase";
 
 const CreateAccount = () => {
   const navigate = useNavigate();
-
+  const[error,setError] = useState("")
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -36,6 +36,7 @@ const CreateAccount = () => {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
+        setError(errorMessage)
         console.log(errorCode, errorMessage);
         // ..
       });
@@ -102,6 +103,9 @@ const CreateAccount = () => {
                               </p>
                             </div>
                           </div> */}
+                            {error && (
+                            <div className="alert alert-danger">{error}</div>
+                          )}
                           <form action="#!">
                             <div className="row gy-3 overflow-hidden">
                               <div className="col-12">
