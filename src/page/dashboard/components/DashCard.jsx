@@ -7,6 +7,7 @@ const DashCard = () => {
   const [totalSales, setTotalSales] = useState(0);
   const [totalProducts, setTotalProducts] = useState(0);
   const [orderNumber, setOrderNumber] = useState(0);
+  const [supplier, setSupplier] = useState(0);
 
   console.log(sales);
   useEffect(() => {
@@ -51,6 +52,18 @@ const DashCard = () => {
     );
     setTotalSales(total);
   }, [sales]);
+
+  useEffect(() => {
+    const unsubscribe = onSnapshot(collection(db, "supplier"), (snapshot) => {
+      const suppliersData = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setSupplier(suppliersData.length);
+    });
+    // Unsubscribe from the snapshot listener when component unmounts
+    return () => unsubscribe();
+  }, []);
   return (
     <>
       <div className="m-4 mt-2 fs-1 text-center fw-bold">
@@ -112,7 +125,7 @@ const DashCard = () => {
           <div className="col-md-3">
             <div className="p-3 border shadow-sm d-flex justify-content-around align-items-center rounded" style={{background:"lightgreen"}}>
               <div>
-                <h3 className="fs-2">20%</h3>
+                <h3 className="fs-2">{supplier}</h3>
                 <p className="fs-4 fw-semibold">No. of Supplier</p>
               </div>
               <svg
