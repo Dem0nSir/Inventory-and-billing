@@ -186,7 +186,7 @@ const Login = () => {
                                   type="submit"
                                   onClick={onLogin}
                                 >
-                                  Sign up
+                                  Sign in
                                 </button>
                               </div>
                             </div>

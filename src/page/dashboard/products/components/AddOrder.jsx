@@ -82,7 +82,7 @@ function AddOrder() {
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label className="fw-semibold">Order Value</Form.Label>
+              <Form.Label className="fw-semibold">Product Price</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Product Price"

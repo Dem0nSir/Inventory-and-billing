@@ -1,38 +1,89 @@
-import { collection, doc, getDoc, getDocs } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  onSnapshot,
+} from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { Dropdown } from "react-bootstrap";
 import { db } from "../services/firebase";
+import PieChart from "./Charts/PieChart";
+import BarChart from "./Charts/BarChart";
+import OrderBarChart from "./Charts/OrderBarChart";
 
 const Report = () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [formData, setFormData] = useState([]);
   const [selectedPeriod, setSelectedPeriod] = useState("Yearly");
   const [filteredData, setFilteredData] = useState([]);
+  const [data, setData] = useState([]);
+  const [sales, setSales] = useState([]);
+  const [salesData, setSalesData] = useState([]);
+  const [orders, setOrder] = useState([]);
+  const [ordersData, setOrdersData] = useState([]);
+
+  useEffect(() => {
+    const unsubscribe = onSnapshot(collection(db, "sales"), (snapshot) => {
+      const suppliersData = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setSales(suppliersData);
+    });
+    // Unsubscribe from the snapshot listener when component unmounts
+    return () => unsubscribe();
+  }, []);
+
+  const transformSalesData = (sales) => {
+    const salesByMonth = Array(12).fill(0);
+    sales.forEach((sale) => {
+      const date = new Date(sale.salesDate);
+      const month = date.getMonth(); // getMonth() returns month index (0 for January, 11 for December)
+      salesByMonth[month] += parseFloat(sale.salesTotal);
+    });
+
+    return salesByMonth.map((total, index) => ({
+      month: new Date(2024, index).toLocaleString("default", { month: "long" }),
+      sales: total,
+    }));
+  };
+
+  useEffect(() => {
+    if (sales.length > 0) {
+      const transformedData = transformSalesData(sales);
+      setSalesData(transformedData);
+    }
+  }, [sales]);
+
   useEffect(() => {
     getProducts();
+  }, [showEditModal, selectedPeriod]);
 
-  }, [showEditModal,selectedPeriod]);
   useEffect(() => {
     let filtered;
     const currentDate = new Date();
-    
-    switch(selectedPeriod) {
-      case 'Yearly':
-        filtered = formData.filter(product => {
+
+    switch (selectedPeriod) {
+      case "Yearly":
+        filtered = formData.filter((product) => {
           const productDate = new Date(product.addedOn);
           return productDate.getFullYear() === currentDate.getFullYear();
         });
         break;
-      case 'Monthly':
-        filtered = formData.filter(product => {
+      case "Monthly":
+        filtered = formData.filter((product) => {
           const productDate = new Date(product.addedOn);
-          return productDate.getFullYear() === currentDate.getFullYear() && productDate.getMonth() === currentDate.getMonth();
+          return (
+            productDate.getFullYear() === currentDate.getFullYear() &&
+            productDate.getMonth() === currentDate.getMonth()
+          );
         });
         break;
-      case 'Weekly':
+      case "Weekly":
         const oneWeekAgo = new Date();
         oneWeekAgo.setDate(currentDate.getDate() - 7);
-        filtered = formData.filter(product => {
+        filtered = formData.filter((product) => {
           const productDate = new Date(product.addedOn);
           return productDate >= oneWeekAgo;
         });
@@ -40,7 +91,7 @@ const Report = () => {
       default:
         filtered = formData;
     }
-  
+
     setFilteredData(filtered);
   }, [selectedPeriod, formData]);
 
@@ -56,263 +107,97 @@ const Report = () => {
       });
 
       setFormData(productsData);
+      return productsData;
     } catch (error) {
       console.error("Error fetching products:", error);
       return []; // Return an empty array in case of an error
     }
   };
-  console.log(formData);
 
-  // const filterDataByPeriod = () => {
-  //   const currentDate = new Date();
-  //   const oneWeekAgo = new Date(
-  //     currentDate.getTime() - 7 * 24 * 60 * 60 * 1000
-  //   );
+  useEffect(() => {
+    const fetchData = async () => {
+      const productsData = await getProducts();
 
-  //   // Filter data based on selected period
-  //   switch (selectedPeriod) {
-  //     case "Yearly":
-  //       return formData.filter((item) => {
-  //         const itemDate = new Date(item.addedOn);
-  //         return itemDate.getFullYear() === currentDate.getFullYear();
-  //       });
+      // Transform the data to the format required by the PieChart
+      const transformedData = productsData.map((product) => ({
+        id: product.productName,
+        label: product.productName,
+        value: parseInt(product.quantity, 10), // Assuming you want to use quantity as the value
+        color: `hsl(${Math.floor(Math.random() * 360)}, 70%, 50%)`, // Generate a random color
+      }));
 
-  //     case "Monthly":
-  //       return formData.filter((item) => {
-  //         const itemDate = new Date(item.addedOn);
-  //         return (
-  //           itemDate.getFullYear() === currentDate.getFullYear() &&
-  //           itemDate.getMonth() === currentDate.getMonth()
-  //         );
-  //       });
+      setData(transformedData);
+    };
 
-  //     case "Weekly":
-  //       return formData.filter((item) => {
-  //         const itemDate = new Date(item.addedOn);
-  //         return itemDate >= oneWeekAgo && itemDate <= currentDate;
-  //       });
+    fetchData();
+  }, []);
 
-  //     default:
-  //       return formData;
-  //   }
-  // };
+  useEffect(() => {
+    const unsubscribe = onSnapshot(collection(db, "orders"), (snapshot) => {
+      const ordersData = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setOrder(ordersData);
+    });
+    // Unsubscribe from the snapshot listener when component unmounts
+    return () => unsubscribe();
+  }, []);
 
-  // const filteredData = filterDataByPeriod();
-  // console.log("f", filteredData);
+  // Transform order data into the format required by the chart
+  const transformOrderData = (orders) => {
+    const ordersByMonth = Array(12).fill(0);
+    orders.forEach((order) => {
+      const date = new Date(order.orderPlacedDate);
+      const month = date.getMonth();
+      console.log(month); // getMonth() returns month index (0 for January, 11 for December)
+      ordersByMonth[month]++;
+    });
+
+    return ordersByMonth.map((count, index) => ({
+      month: new Date(2024, index).toLocaleString("default", { month: "long" }),
+      orders: count,
+    }));
+  };
+  useEffect(() => {
+    if (orders.length > 0) {
+      const transformedData = transformOrderData(orders);
+      console.log(transformedData);
+      setOrdersData(transformedData);
+    }
+  }, [orders]);
 
   return (
     <>
-      <div className="bg-white h-screen">
-        <div class="ml-auto mb-6 lg:w-[75%] xl:w-[80%] 2xl:w-[85%]">
-          <div class="sticky z-10 top-0 h-16 border-b bg-white lg:py-2.5">
-            <div class="px-6 flex items-center justify-between space-x-4 2xl:container">
-              <h5 class="text-2xl text-gray-600 font-medium lg:block text-center">
-                {/* Inventory Management system */}
-              </h5>
-            </div>
-          </div>
-          <div className="row mb-4">
-            <div className="col-6 mb-4">
-              <div className="card m-4 h-100">
-                <div className="mx-4 mt-3 fw-bold d-flex justify-content-between">
-                  <div className="fs-3">Overview</div>
-                  <Dropdown>
-                    <Dropdown.Toggle variant="success" id="dropdown-basic">
-                      Select Period
-                    </Dropdown.Toggle>
-
-                    <Dropdown.Menu>
-                      <Dropdown.Item href="#/action-1">Yearly</Dropdown.Item>
-                      <Dropdown.Item href="#/action-2">Monthly</Dropdown.Item>
-                      <Dropdown.Item href="#/action-3">Weekly</Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
-                  {/* <div className="dropdown">
-                    <button
-                      className="btn btn-secondary dropdown-toggle"
-                      type="button"
-                      id="dropdownMenuButton"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
-                    >
-                      Select Period
-                    </button>
-                    <ul
-                      className="dropdown-menu"
-                      aria-labelledby="dropdownMenuButton"
-                    >
-                      <li className="dropdown-item">
-                        <a className="dropdown-item" href="#">
-                        Yearly
-                        </a>
-                      </li>
-                      <li>
-                        <a className="dropdown-item" href="#">
-                          Monthly
-                        </a>
-                      </li>
-                      <li>
-                        <a className="dropdown-item" href="#">
-                          Weekly
-                        </a>
-                      </li>
-                    </ul>
-                  </div> */}
-                </div>
-                <div className="row mx-4 mt-5 fw-bold">
-                  {/* First part: Amount and Total Profit */}
-                  <div className="col ">
-                    <div>$1000</div>
-                    <div>Total Profit</div>
-                  </div>
-
-                  {/* Second part: Amount and Revenue */}
-                  <div className="col">
-                    <div>$1500</div>
-                    <div>Revenue</div>
-                  </div>
-
-                  {/* Third part: Amount and Sales */}
-                  <div className="col">
-                    <div> $2000</div>
-                    <div>Sales</div>
-                  </div>
+      <div className="d-flex flex-column vh-100 bg-white">
+        <div className="flex-grow-1 overflow-auto">
+          <div className="bg-white h-screen">
+            <div class="ml-auto mb-6 lg:w-[75%] xl:w-[80%] 2xl:w-[85%]">
+              <div class="sticky z-10 top-0 h-16 border-b bg-white lg:py-2.5">
+                <div class="px-6 flex items-center justify-between space-x-4 2xl:container">
+                  <h5 class="text-2xl text-gray-600 font-medium lg:block text-center">
+                    {/* Inventory Management system */}
+                  </h5>
                 </div>
               </div>
-            </div>
-            <div className="col-6 mb-4">
-              <div className="card m-4 h-100">
-                <div className="mx-4 mt-3 fw-bold d-flex justify-content-between">
-                  <div className="fs-3">Recently Added Product</div>
-                  <Dropdown>
-                    <Dropdown.Toggle variant="success" id="dropdown-basic">
-                      Select Period
-                    </Dropdown.Toggle>
-
-                    <Dropdown.Menu>
-                      <Dropdown.Item
-                        onClick={() => setSelectedPeriod("Yearly")}
-                      >
-                        Yearly
-                      </Dropdown.Item>
-                      <Dropdown.Item
-                        onClick={() => setSelectedPeriod("Monthly")}
-                      >
-                        Monthly
-                      </Dropdown.Item>
-                      <Dropdown.Item
-                        onClick={() => setSelectedPeriod("Weekly")}
-                      >
-                        Weekly
-                      </Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
-                </div>
-                <div class="table-responsive m-4">
-                  <table class="table">
-                    <thead>
-                      <tr class="fw-bold fs-6 text-gray-800">
-                        <th>Product</th>
-                        <th>Buying Price</th>
-                        <th>Quantity</th>
-                        <th>Date</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {filteredData.map((product) => (
-                        <tr key={product.id}>
-                          <td>{product.productName}</td>
-                          <td>{product.buyingPrice}</td>
-                          <td>{product.quantity}</td>
-                          <td>{product.addedOn}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+              <div style={{ height: "500px" }} className="mb-4">
+                <h2 className="text-center mt-4">Total Inventory Record</h2>
+                <PieChart data={data} />
               </div>
-            </div>
-          </div>
-          <div className="my-4"> </div>
-
-          <div className="card mx-4 ">
-            <div className="mx-4 mt-3 fw-bold d-flex justify-content-between">
-              <div className="fs-3">Best selling products</div>
-              <div className="dropdown">
-                <button
-                  className="btn btn-secondary dropdown-toggle"
-                  type="button"
-                  id="dropdownMenuButton"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  Select Period
-                </button>
-                <ul
-                  className="dropdown-menu"
-                  aria-labelledby="dropdownMenuButton"
-                >
-                  <li>
-                    <a className="dropdown-item" href="#">
-                      Yearly
-                    </a>
-                  </li>
-                  <li>
-                    <a className="dropdown-item" href="#">
-                      Monthly
-                    </a>
-                  </li>
-                  <li>
-                    <a className="dropdown-item" href="#">
-                      Weekly
-                    </a>
-                  </li>
-                </ul>
+              <div
+                style={{ height: "500px", width: "100%", marginLeft: "20px" }}
+                className="mb-5"
+              >
+                <h2 className="text-center mt-12">Total Sales Record</h2>
+                <BarChart data={salesData} />
               </div>
-            </div>
-            <div class="table-responsive m-4">
-              <table class="table">
-                <thead>
-                  <tr class="fw-bold fs-6 text-gray-800">
-                    <th>Supplier Name</th>
-                    <th>Product</th>
-                    <th>Contact Number</th>
-                    <th>Email</th>
-                    <th>Type</th>
-                    <th>On the way</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Aayu Shakya</td>
-                    <td>Cakes</td>
-                    <td>1234567890</td>
-                    <td>Aayu@gmail.com</td>
-                    <td>Taking Return</td>
-                    <td>13</td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td>Aayu Shakya</td>
-                    <td>Coffee</td>
-                    <td>1234567890</td>
-                    <td>Aayu@gmail.com</td>
-                    <td>Taking Return</td>
-                    <td>13</td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td>Aayu Shakya</td>
-                    <td>Shoes</td>
-                    <td>1234567890</td>
-                    <td>Aayu@gmail.com</td>
-                    <td>Not Taking Return</td>
-                    <td>13</td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
+              <div
+                style={{ height: "500px", width: "100%", marginLeft: "20px" }}
+                className="mb-5"
+              >
+                <h2 className="text-center mt-12">Total Orders</h2>
+                <OrderBarChart data={ordersData} />
+              </div>
             </div>
           </div>
         </div>
