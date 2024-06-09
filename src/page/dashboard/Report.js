@@ -2,9 +2,6 @@ import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { Dropdown } from "react-bootstrap";
 import { db } from "../services/firebase";
-import { PieCanvas } from "@nivo/pie";
-import PieChart from "./Charts/PieChart";
-import BarChart from "./Charts/BarChart";
 
 const Report = () => {
   const [showEditModal, setShowEditModal] = useState(false);
@@ -13,31 +10,29 @@ const Report = () => {
   const [filteredData, setFilteredData] = useState([]);
   useEffect(() => {
     getProducts();
-  }, [showEditModal, selectedPeriod]);
+
+  }, [showEditModal,selectedPeriod]);
   useEffect(() => {
     let filtered;
     const currentDate = new Date();
-
-    switch (selectedPeriod) {
-      case "Yearly":
-        filtered = formData.filter((product) => {
+    
+    switch(selectedPeriod) {
+      case 'Yearly':
+        filtered = formData.filter(product => {
           const productDate = new Date(product.addedOn);
           return productDate.getFullYear() === currentDate.getFullYear();
         });
         break;
-      case "Monthly":
-        filtered = formData.filter((product) => {
+      case 'Monthly':
+        filtered = formData.filter(product => {
           const productDate = new Date(product.addedOn);
-          return (
-            productDate.getFullYear() === currentDate.getFullYear() &&
-            productDate.getMonth() === currentDate.getMonth()
-          );
+          return productDate.getFullYear() === currentDate.getFullYear() && productDate.getMonth() === currentDate.getMonth();
         });
         break;
-      case "Weekly":
+      case 'Weekly':
         const oneWeekAgo = new Date();
         oneWeekAgo.setDate(currentDate.getDate() - 7);
-        filtered = formData.filter((product) => {
+        filtered = formData.filter(product => {
           const productDate = new Date(product.addedOn);
           return productDate >= oneWeekAgo;
         });
@@ -45,7 +40,7 @@ const Report = () => {
       default:
         filtered = formData;
     }
-
+  
     setFilteredData(filtered);
   }, [selectedPeriod, formData]);
 
@@ -105,72 +100,6 @@ const Report = () => {
   // const filteredData = filterDataByPeriod();
   // console.log("f", filteredData);
 
-  const data = [
-    {
-      id: "ruby",
-      label: "ruby",
-      value: 335,
-      color: "hsl(348, 70%, 50%)",
-    },
-    {
-      id: "c",
-      label: "c",
-      value: 524,
-      color: "hsl(46, 70%, 50%)",
-    },
-    {
-      id: "go",
-      label: "go",
-      value: 631,
-      color: "hsl(162, 70%, 50%)",
-    },
-    {
-      id: "python",
-      label: "python",
-      value: 237,
-      color: "hsl(291, 70%, 50%)",
-    },
-    {
-      id: "scala",
-      label: "scala",
-      value: 541,
-      color: "hsl(189, 70%, 50%)",
-    },
-  ];
-
-  const data2 = [
-    {
-      country: "AD",
-      "hot dog": 52,
-      "hot dogColor": "hsl(355, 70%, 50%)",
-      burger: 30,
-      burgerColor: "hsl(135, 70%, 50%)",
-      sandwich: 40,
-      sandwichColor: "hsl(300, 70%, 50%)",
-      kebab: 70,
-      kebabColor: "hsl(90, 70%, 50%)",
-      fries: 95,
-      friesColor: "hsl(50, 70%, 50%)",
-      donut: 20,
-      donutColor: "hsl(22, 70%, 50%)",
-    },
-    {
-      country: "AE",
-      "hot dog": 34,
-      "hot dogColor": "hsl(28, 70%, 50%)",
-      burger: 45,
-      burgerColor: "hsl(60, 70%, 50%)",
-      sandwich: 60,
-      sandwichColor: "hsl(120, 70%, 50%)",
-      kebab: 80,
-      kebabColor: "hsl(210, 70%, 50%)",
-      fries: 40,
-      friesColor: "hsl(270, 70%, 50%)",
-      donut: 55,
-      donutColor: "hsl(310, 70%, 50%)",
-    },
-  ];
-
   return (
     <>
       <div className="bg-white h-screen">
@@ -181,12 +110,6 @@ const Report = () => {
                 {/* Inventory Management system */}
               </h5>
             </div>
-          </div>
-          <div style={{ height: "500px" }}>
-            <PieChart data={data} />
-          </div>
-          <div style={{ height: "500px" }}>
-            <BarChart data={data2} />
           </div>
           <div className="row mb-4">
             <div className="col-6 mb-4">
