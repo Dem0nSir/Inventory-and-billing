@@ -68,7 +68,7 @@ const Dashboard = (props) => {
           <div className="mx-4 ">
             <div className="fs-3 fw-bold m-1 mb-2">Todays Sales</div>
             <div class="table-responsive ">
-              <table class="table table-rounded table-striped border gy-7 gs-7">
+              <table class="table table-rounded table-striped border gy-7 gs-7 table-hover">
                 <thead>
                   <tr class="fw-semibold fs-6 text-gray-800 border-bottom border-gray-200">
                     <th>Order ID</th>

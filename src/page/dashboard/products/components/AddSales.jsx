@@ -6,6 +6,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { useNavigate } from "react-router-dom";
 import { addDoc, collection, doc, onSnapshot, updateDoc } from "firebase/firestore";
 import { db } from "../../../services/firebase";
+import { ToastContainer, toast } from "react-toastify";
 
 import * as yup from "yup";
 const AddSales = () => {
@@ -92,7 +93,7 @@ const AddSales = () => {
         const updatedQuantity = selectedProduct.quantity - formData.itemSold;
         const productDocRef = doc(db, "products", selectedProduct.id);
         await updateDoc(productDocRef, { quantity: updatedQuantity });
-  
+        toast.success("Added sales record!");
         console.log("Form Data Saved to Firestore:", formData);
         handleClose();
         setFormData({
@@ -119,46 +120,6 @@ const AddSales = () => {
   };
   
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     await schema.validate(formData, { abortEarly: false });
-  //     try {
-  //       const today = new Date();
-  //       const formattedDate = `${today.getFullYear()}-${
-  //         today.getMonth() + 1
-  //       }-${today.getDate()}`;
-
-  //       const assetCollectionRef = collection(db, "sales");
-  //       await addDoc(assetCollectionRef, {
-  //         ...formData,
-  //         salesDate: formattedDate,
-  //       });
-  //       console.log("Form Data Saved to Firestore:", formData);
-  //       handleClose();
-  //       setFormData({
-  //         orderId: "",
-  //         customerName: "",
-  //         itemsName: "",
-  //         phoneNumber: "",
-  //         itemName: "",
-  //         itemCost: "",
-  //         itemSold: "",
-  //         salesChannel: "",
-  //         payment: "",
-  //         paymentMethod: "",
-  //         salesTotal: "",
-  //       });
-  //     } catch (error) {
-  //       console.error("Error saving form data:", error);
-  //       setErrorMessage("Error saving form data");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error validating form data:", error);
-  //     setErrorMessage("Enter all required fields");
-  //   }
-  // };
-
   const handleClose = () => {
     setShow(false);
     // navigate('/dashboard/sales');
@@ -168,6 +129,7 @@ const AddSales = () => {
 
   return (
     <>
+        <ToastContainer position="bottom-center" autoClose={5000} />
       <Button variant="primary" onClick={handleShow}>
         Add Sales
       </Button>
@@ -321,6 +283,7 @@ const AddSales = () => {
           </Row>
         </Offcanvas.Body>
       </Offcanvas>
+  
     </>
   );
 };

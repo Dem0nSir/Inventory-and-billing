@@ -174,7 +174,7 @@ const Suppliers = () => {
             </div>
 
             <div class="table-responsive m-4">
-              <table class="table">
+              <table class="table table-hover">
                 <thead>
                   <tr class="fw-bold fs-6 text-gray-800">
                     <th>Supplier Name</th>
