@@ -283,7 +283,7 @@ function HeaderAndSidebar(props) {
   return (
     <div>
       <aside className="ml-[-100%] fixed z-10 top-0 pb-3 px-6 w-full flex flex-col justify-between h-screen border-r bg-white transition duration-300 md:w-4/12 lg:ml-0 lg:w-[25%] xl:w-[20%] 2xl:w-[15%]">
-      {dataFetched && 
+      {/* {dataFetched &&  */}
         <div>
           <div className="-mx-6 px-6 py-">
             <Link to="/dashboard" title="home" className="text-decoration-none">
@@ -357,7 +357,7 @@ function HeaderAndSidebar(props) {
               ))}
           </ul>
         </div>
-}
+{/* } */}
         <div className="px-6 -mx-6 pt-4 flex justify-between items-center border-t">
           <button className="w-full px-4 py-3 mx-4 flex items-center space-x-4 rounded-md text-gray-600 hover:bg-gradient-to-r from-sky-500 to-cyan-300 hover:text-white">
             <svg

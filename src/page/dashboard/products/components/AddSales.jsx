@@ -4,7 +4,7 @@ import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useNavigate } from "react-router-dom";
-import { addDoc, collection, onSnapshot } from "firebase/firestore";
+import { addDoc, collection, doc, onSnapshot, updateDoc } from "firebase/firestore";
 import { db } from "../../../services/firebase";
 
 import * as yup from "yup";
@@ -61,17 +61,38 @@ const AddSales = () => {
     e.preventDefault();
     try {
       await schema.validate(formData, { abortEarly: false });
+      
+      // Fetch product information
+      const selectedProduct = products.find(product => product.productName === formData.itemsName);
+      
+      if (!selectedProduct) {
+        setErrorMessage("Invalid product selected");
+        return;
+      }
+  
+      if (selectedProduct.quantity < formData.itemSold) {
+        setErrorMessage("Insufficient stock for the selected product");
+        return;
+      }
+  
+      // Proceed with adding the sales record
       try {
         const today = new Date();
         const formattedDate = `${today.getFullYear()}-${
           today.getMonth() + 1
         }-${today.getDate()}`;
-
+  
         const assetCollectionRef = collection(db, "sales");
         await addDoc(assetCollectionRef, {
           ...formData,
           salesDate: formattedDate,
         });
+  
+        // Deduct sold quantity from inventory
+        const updatedQuantity = selectedProduct.quantity - formData.itemSold;
+        const productDocRef = doc(db, "products", selectedProduct.id);
+        await updateDoc(productDocRef, { quantity: updatedQuantity });
+  
         console.log("Form Data Saved to Firestore:", formData);
         handleClose();
         setFormData({
@@ -96,11 +117,52 @@ const AddSales = () => {
       setErrorMessage("Enter all required fields");
     }
   };
+  
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     await schema.validate(formData, { abortEarly: false });
+  //     try {
+  //       const today = new Date();
+  //       const formattedDate = `${today.getFullYear()}-${
+  //         today.getMonth() + 1
+  //       }-${today.getDate()}`;
+
+  //       const assetCollectionRef = collection(db, "sales");
+  //       await addDoc(assetCollectionRef, {
+  //         ...formData,
+  //         salesDate: formattedDate,
+  //       });
+  //       console.log("Form Data Saved to Firestore:", formData);
+  //       handleClose();
+  //       setFormData({
+  //         orderId: "",
+  //         customerName: "",
+  //         itemsName: "",
+  //         phoneNumber: "",
+  //         itemName: "",
+  //         itemCost: "",
+  //         itemSold: "",
+  //         salesChannel: "",
+  //         payment: "",
+  //         paymentMethod: "",
+  //         salesTotal: "",
+  //       });
+  //     } catch (error) {
+  //       console.error("Error saving form data:", error);
+  //       setErrorMessage("Error saving form data");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error validating form data:", error);
+  //     setErrorMessage("Enter all required fields");
+  //   }
+  // };
 
   const handleClose = () => {
     setShow(false);
     // navigate('/dashboard/sales');
-    window.location.reload();
+    // window.location.reload();
   };
   const handleShow = () => setShow(true);
 

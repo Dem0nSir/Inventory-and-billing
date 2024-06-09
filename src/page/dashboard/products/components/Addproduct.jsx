@@ -1,19 +1,39 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Offcanvas from "react-bootstrap/Offcanvas";
 // import Button from 'react-bootstrap/Button';
 import Form from "react-bootstrap/Form";
 import { db } from "../../../services/firebase";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, onSnapshot } from "firebase/firestore";
 function AddProduct() {
   const [show, setShow] = useState(false);
+  const [suppliers, setSuppliers] = useState([]);
   const [formData, setFormData] = useState({
     productName: "",
     buyingPrice: "",
     quantity: "",
     sellingPrice: "",
+    supplier:"",
     productStatus: "In-Stock", // Default value for product status
   });
+
+
+  useEffect(() => {
+    const productsRef = collection(db, "supplier");
+
+    const unsubscribe = onSnapshot(productsRef, (snapshot) => {
+      const productsList = snapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+      setSuppliers(productsList);
+    });
+
+    // Cleanup function
+    return () => unsubscribe();
+  }, []);
+
+
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const handleChange = (e) => {
@@ -101,12 +121,24 @@ function AddProduct() {
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label className="fw-semibold">Supplier</Form.Label>
-              <Form.Control
+              {/* <Form.Control
                 type="text"
                 placeholder="Supplier"
                 name="supplier"
                 onChange={handleChange}
-              />
+              /> */}
+               <Form.Select
+                as="select"
+                name="supplier"
+                onChange={handleChange}
+              >
+                <option value="">Select a supplier</option>
+                {suppliers.map((product, index) => (
+                  <option key={index} value={product.productName}>
+                    {product.SupplierName}
+                  </option>
+                ))}
+              </Form.Select>
             </Form.Group>
             {/* <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Added On</Form.Label>

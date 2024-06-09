@@ -184,17 +184,17 @@ const Products = (props) => {
                       <td>{product.addedOn}</td>
                       <td>
                         {product.productStatus === "In-Stock" && (
-                          <span className="badge bg-success p-1 text-muted">
+                          <span className="badge bg-success p-1 text-white">
                             {product.productStatus}
                           </span>
                         )}
                         {product.productStatus === "Out-of-Stock" && (
-                          <span className="badge bg-warning p-1 text-muted">
+                          <span className="badge bg-warning p-1 text-white">
                             {product.productStatus}
                           </span>
                         )}
                         {product.productStatus === "Stopped" && (
-                          <span className="badge bg-danger p-1 text-muted">
+                          <span className="badge bg-danger p-1 text-white">
                             {product.productStatus}
                           </span>
                         )}

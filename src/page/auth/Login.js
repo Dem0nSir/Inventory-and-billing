@@ -3,6 +3,8 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../services/firebase";
 import { NavLink, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -37,6 +39,7 @@ const Login = () => {
         localStorage.setItem("valid", true);
         setCookie("isLoggedIn", true, 1);
         navigate("/dashboard");
+        navigate("/dashboard", { state: { isLoggedIn: true } });
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -81,6 +84,7 @@ const Login = () => {
 
   return (
     <>
+
       <main>
         <section className="bg-light">
           <div className="container-fluid">
@@ -155,30 +159,7 @@ const Login = () => {
                                 </label>
                               </div>
                             </div>
-                            {/* <div className="col-12">
-                                <div className="form-check">
-                                  <input
-                                    className="form-check-input"
-                                    type="checkbox"
-                                    value=""
-                                    name="iAgree"
-                                    id="iAgree"
-                                    required
-                                  />
-                                  <label
-                                    className="form-check-label text-secondary"
-                                    for="iAgree"
-                                  >
-                                    I agree to the{" "}
-                                    <a
-                                      href="#!"
-                                      className="link-primary text-decoration-none"
-                                    >
-                                      terms and conditions
-                                    </a>
-                                  </label>
-                                </div>
-                              </div> */}
+                         
                             <div className="col-12">
                               <div className="d-grid">
                                 <button
@@ -201,6 +182,7 @@ const Login = () => {
           </div>
         </section>
       </main>
+      <ToastContainer position="bottom-center" autoClose={5000} />
     </>
   );
 };

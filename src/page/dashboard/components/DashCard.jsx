@@ -110,10 +110,10 @@ const DashCard = () => {
             </div>
           </div>
           <div className="col-md-3">
-            <div className="p-3 border shadow-sm d-flex justify-content-around align-items-center rounded" style={{background:"teal"}}>
+            <div className="p-3 border shadow-sm d-flex justify-content-around align-items-center rounded" style={{background:"lightgreen"}}>
               <div>
                 <h3 className="fs-2">20%</h3>
-                <p className="fs-4 fw-semibold">Increase</p>
+                <p className="fs-4 fw-semibold">No. of Supplier</p>
               </div>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
