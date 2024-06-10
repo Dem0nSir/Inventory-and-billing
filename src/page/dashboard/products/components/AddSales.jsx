@@ -56,7 +56,24 @@ const AddSales = () => {
       ...prevFormData,
       [name]: value,
     }));
+
+    if (name === 'itemsName') {
+      const selectedProduct = products.find(
+        (product) => product.productName === value
+      );
+      if (selectedProduct) {
+        setFormData((prevState) => ({
+          ...prevState,
+          itemCost: selectedProduct.sellingPrice, // Update itemCost with the selling price of the selected product
+        }));
+      } else {
+        setFormData((prevState) => ({
+          ...prevState,
+          itemCost: '',
+        }));
   };
+}
+}
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -190,6 +207,7 @@ const AddSales = () => {
               <Form.Control
                 as="select"
                 name="itemsName"
+                value={formData.itemsName}
                 onChange={handleChange}
               >
                 <option value="">Select a product</option>
@@ -206,6 +224,7 @@ const AddSales = () => {
                 type="text"
                 placeholder="Enter Item Cost"
                 name="itemCost"
+                value={formData.itemCost}
                 onChange={handleChange}
               />
             </Form.Group>
@@ -225,7 +244,7 @@ const AddSales = () => {
                 name="salesChannel"
                 onChange={handleChange}
               >
-                <option selected>Select Sales Channel</option>
+                <option selected disabled>Select Sales Channel</option>
                 <option value="Online">Online</option>
                 <option value="Physical Store">Physical Store</option>
                 <option value="Phone Order">Phone Order</option>
@@ -238,7 +257,7 @@ const AddSales = () => {
                 name="payment"
                 onChange={handleChange}
               >
-                <option selected>Payment</option>
+                <option selected disabled>Payment</option>
                 <option value="pending">Pending</option>
                 <option value="Full Payment">Full Payment</option>
               </Form.Select>
@@ -250,7 +269,7 @@ const AddSales = () => {
                 name="paymentMethod"
                 onChange={handleChange}
               >
-                <option selected>Select Payment Method</option>
+                <option selected disabled>Select Payment Method</option>
                 <option value="Cash">Cash</option>
                 <option value="Online Payment">Online Payment</option>
                 <option value="Card payment">Card payment</option>

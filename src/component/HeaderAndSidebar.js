@@ -10,6 +10,101 @@ const getDashboardMenu22 = (matchedUser) => {
   if (matchedUser && matchedUser.user === "1") {
     return [
       {
+        id: 1,
+        name: "Dashboard",
+        link: "/dashboard",
+        icon: (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="icon icon-tabler icons-tabler-outline icon-tabler-layout-dashboard"
+          >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M5 4h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1" />
+            <path d="M5 16h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1" />
+            <path d="M15 12h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1" />
+            <path d="M15 4h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1" />
+          </svg>
+        ),
+      },
+      {
+        id: 2,
+        name: "Sales",
+        link: "/dashboard/sales",
+        icon: (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="icon icon-tabler icons-tabler-outline icon-tabler-currency-rupee-nepalese"
+          >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M15 5h-11h3a4 4 0 1 1 0 8h-3l6 6" />
+            <path d="M21 17l-4.586 -4.414a2 2 0 0 0 -2.828 2.828l.707 .707" />
+          </svg>
+        ),
+      },
+      {
+        id: 3,
+        name: "Products",
+        link: "/dashboard/products",
+        icon: (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="icon icon-tabler icons-tabler-outline icon-tabler-building-warehouse"
+          >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M3 21v-13l9 -4l9 4v13" />
+            <path d="M13 13h4v8h-10v-6h6" />
+            <path d="M13 21v-9a1 1 0 0 0 -1 -1h-2a1 1 0 0 0 -1 1v3" />
+          </svg>
+        ),
+      },
+      {
+        id: 6,
+        name: "Orders",
+        link: "/dashboard/orders",
+        icon: (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="icon icon-tabler icons-tabler-outline icon-tabler-folders"
+          >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M9 4h3l2 2h5a2 2 0 0 1 2 2v7a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2" />
+            <path d="M17 17v2a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2h2" />
+          </svg>
+        ),
+      },
+      {
         id: 4,
         name: "Report",
         link: "/dashboard/report",
@@ -115,6 +210,104 @@ const getDashboardMenu22 = (matchedUser) => {
       },
       // ... (other menu items)
     ];
+  }else{
+    return[
+      {
+        id: 1,
+        name: "Dashboard",
+        link: "/dashboard",
+        icon: (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="icon icon-tabler icons-tabler-outline icon-tabler-layout-dashboard"
+          >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M5 4h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1" />
+            <path d="M5 16h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1" />
+            <path d="M15 12h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1" />
+            <path d="M15 4h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1" />
+          </svg>
+        ),
+      },
+      {
+        id: 2,
+        name: "Sales",
+        link: "/dashboard/sales",
+        icon: (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="icon icon-tabler icons-tabler-outline icon-tabler-currency-rupee-nepalese"
+          >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M15 5h-11h3a4 4 0 1 1 0 8h-3l6 6" />
+            <path d="M21 17l-4.586 -4.414a2 2 0 0 0 -2.828 2.828l.707 .707" />
+          </svg>
+        ),
+      },
+      {
+        id: 3,
+        name: "Products",
+        link: "/dashboard/products",
+        icon: (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="icon icon-tabler icons-tabler-outline icon-tabler-building-warehouse"
+          >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M3 21v-13l9 -4l9 4v13" />
+            <path d="M13 13h4v8h-10v-6h6" />
+            <path d="M13 21v-9a1 1 0 0 0 -1 -1h-2a1 1 0 0 0 -1 1v3" />
+          </svg>
+        ),
+      },
+      {
+        id: 6,
+        name: "Orders",
+        link: "/dashboard/orders",
+        icon: (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="icon icon-tabler icons-tabler-outline icon-tabler-folders"
+          >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M9 4h3l2 2h5a2 2 0 0 1 2 2v7a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2" />
+            <path d="M17 17v2a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2h2" />
+          </svg>
+        ),
+      },
+    ]
   }
 
   return [];
@@ -181,103 +374,103 @@ function HeaderAndSidebar(props) {
   };
 
 
-  const dashboardMenu = [
-    {
-      id: 1,
-      name: "Dashboard",
-      link: "/dashboard",
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="icon icon-tabler icons-tabler-outline icon-tabler-layout-dashboard"
-        >
-          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-          <path d="M5 4h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1" />
-          <path d="M5 16h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1" />
-          <path d="M15 12h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1" />
-          <path d="M15 4h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1" />
-        </svg>
-      ),
-    },
-    {
-      id: 2,
-      name: "Sales",
-      link: "/dashboard/sales",
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="icon icon-tabler icons-tabler-outline icon-tabler-currency-rupee-nepalese"
-        >
-          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-          <path d="M15 5h-11h3a4 4 0 1 1 0 8h-3l6 6" />
-          <path d="M21 17l-4.586 -4.414a2 2 0 0 0 -2.828 2.828l.707 .707" />
-        </svg>
-      ),
-    },
-    {
-      id: 3,
-      name: "Products",
-      link: "/dashboard/products",
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="icon icon-tabler icons-tabler-outline icon-tabler-building-warehouse"
-        >
-          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-          <path d="M3 21v-13l9 -4l9 4v13" />
-          <path d="M13 13h4v8h-10v-6h6" />
-          <path d="M13 21v-9a1 1 0 0 0 -1 -1h-2a1 1 0 0 0 -1 1v3" />
-        </svg>
-      ),
-    },
-    {
-      id: 6,
-      name: "Orders",
-      link: "/dashboard/orders",
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="icon icon-tabler icons-tabler-outline icon-tabler-folders"
-        >
-          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-          <path d="M9 4h3l2 2h5a2 2 0 0 1 2 2v7a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2" />
-          <path d="M17 17v2a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2h2" />
-        </svg>
-      ),
-    },
-  ];
+  // const dashboardMenu = [
+  //   {
+  //     id: 1,
+  //     name: "Dashboard",
+  //     link: "/dashboard",
+  //     icon: (
+  //       <svg
+  //         xmlns="http://www.w3.org/2000/svg"
+  //         width="24"
+  //         height="24"
+  //         viewBox="0 0 24 24"
+  //         fill="none"
+  //         stroke="currentColor"
+  //         stroke-width="2"
+  //         stroke-linecap="round"
+  //         stroke-linejoin="round"
+  //         class="icon icon-tabler icons-tabler-outline icon-tabler-layout-dashboard"
+  //       >
+  //         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  //         <path d="M5 4h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1" />
+  //         <path d="M5 16h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1" />
+  //         <path d="M15 12h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1" />
+  //         <path d="M15 4h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1" />
+  //       </svg>
+  //     ),
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Sales",
+  //     link: "/dashboard/sales",
+  //     icon: (
+  //       <svg
+  //         xmlns="http://www.w3.org/2000/svg"
+  //         width="24"
+  //         height="24"
+  //         viewBox="0 0 24 24"
+  //         fill="none"
+  //         stroke="currentColor"
+  //         stroke-width="2"
+  //         stroke-linecap="round"
+  //         stroke-linejoin="round"
+  //         class="icon icon-tabler icons-tabler-outline icon-tabler-currency-rupee-nepalese"
+  //       >
+  //         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  //         <path d="M15 5h-11h3a4 4 0 1 1 0 8h-3l6 6" />
+  //         <path d="M21 17l-4.586 -4.414a2 2 0 0 0 -2.828 2.828l.707 .707" />
+  //       </svg>
+  //     ),
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "Products",
+  //     link: "/dashboard/products",
+  //     icon: (
+  //       <svg
+  //         xmlns="http://www.w3.org/2000/svg"
+  //         width="24"
+  //         height="24"
+  //         viewBox="0 0 24 24"
+  //         fill="none"
+  //         stroke="currentColor"
+  //         stroke-width="2"
+  //         stroke-linecap="round"
+  //         stroke-linejoin="round"
+  //         class="icon icon-tabler icons-tabler-outline icon-tabler-building-warehouse"
+  //       >
+  //         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  //         <path d="M3 21v-13l9 -4l9 4v13" />
+  //         <path d="M13 13h4v8h-10v-6h6" />
+  //         <path d="M13 21v-9a1 1 0 0 0 -1 -1h-2a1 1 0 0 0 -1 1v3" />
+  //       </svg>
+  //     ),
+  //   },
+  //   {
+  //     id: 6,
+  //     name: "Orders",
+  //     link: "/dashboard/orders",
+  //     icon: (
+  //       <svg
+  //         xmlns="http://www.w3.org/2000/svg"
+  //         width="24"
+  //         height="24"
+  //         viewBox="0 0 24 24"
+  //         fill="none"
+  //         stroke="currentColor"
+  //         stroke-width="2"
+  //         stroke-linecap="round"
+  //         stroke-linejoin="round"
+  //         class="icon icon-tabler icons-tabler-outline icon-tabler-folders"
+  //       >
+  //         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  //         <path d="M9 4h3l2 2h5a2 2 0 0 1 2 2v7a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2" />
+  //         <path d="M17 17v2a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2h2" />
+  //       </svg>
+  //     ),
+  //   },
+  // ];
 
   console.log(dashboardMenu22);
   return (
@@ -311,7 +504,7 @@ function HeaderAndSidebar(props) {
           </div> */}
 
           <ul className="space-y-2 tracking-wide mt-8">
-            {dashboardMenu.map((m) => (
+            {/* {dashboardMenu.map((m) => (
               <Link to={m.link} className="nav-link text-decoration-none">
                 <li
                   key={m.id}
@@ -332,7 +525,7 @@ function HeaderAndSidebar(props) {
                   </div>
                 </li>
               </Link>
-            ))}
+            ))} */}
 
             {memoizedGetDashboardMenu22.length > 0 &&
               memoizedGetDashboardMenu22.map((m) => (
