@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button } from "react-bootstrap";
+import { Button, Offcanvas } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -53,7 +53,7 @@ console.log(formData)
   const handleClose = () => {
     setShow(false);
     // navigate("/dashboard/sales");
-    window.location.reload();
+    // window.location.reload();
   };
   const handleShow = () => setShow(true);
 
@@ -63,12 +63,21 @@ console.log(formData)
         Edit
       </Button>
       {/* <Invoice  /> */}
-      <Modal show={show} onHide={handleClose}>
+      {/* <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Edit Sales Record</Modal.Title>
-        </Modal.Header>
-
-        <Modal.Body>
+        </Modal.Header> */}
+  <Offcanvas
+        show={show}
+        onHide={handleClose}
+        placement="end"
+        style={{ width: "600px" }}
+      >
+        <Offcanvas.Header closeButton>
+          <Offcanvas.Title>Edit Sales Record</Offcanvas.Title>
+        </Offcanvas.Header>
+        <Offcanvas.Body>
+        {/* <Modal.Body> */}
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
               <Form.Label className="fw-semibold">Order Id</Form.Label>
@@ -187,16 +196,19 @@ console.log(formData)
               />
             </Form.Group>
           </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+        {/* </Modal.Body> */}
+        </Offcanvas.Body>
+   
+        <div className="d-flex justify-content-end mx-5 my-3 ">
+          <Button variant="secondary" onClick={handleClose} className="mx-2">
             Close
           </Button>
           <Button variant="primary" onClick={handleSubmit}>
             Edit Record
           </Button>
-        </Modal.Footer>
-      </Modal>
+        </div>
+        </Offcanvas>
+      {/* </Modal> */}
     </>
   );
 };

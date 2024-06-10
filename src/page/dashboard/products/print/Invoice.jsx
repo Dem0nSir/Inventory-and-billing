@@ -40,7 +40,7 @@ export default function Invoice({ id }) {
   const handleShow = () => setShow(true);
   const closeModal = () => {
     setShow(false);
-    window.location.reload();
+    // window.location.reload();
   };
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
